@@ -3,9 +3,9 @@ using Microsoft.Extensions.Logging;
 
 namespace LedgerFlow.Application.Transactions;
 
-public class CreateCreditTransactionCommandHandler(ILogger<CreateCreditTransactionCommandHandler> logger) : ICommandHandler<CreateCreditTransactionCommand>
+public class CreateCreditCommandHandler(ILogger<CreateCreditCommandHandler> logger) : ICommandHandler<CreateCreditCommand>
 {
-    public async Task<Result> HandleAsync(CreateCreditTransactionCommand command, CancellationToken cancellationToken = default)
+    public async Task<Result> HandleAsync(CreateCreditCommand command, CancellationToken cancellationToken = default)
     {
         if (command is null)
             return Result.Failure("O comando não pode ser nulo.");
@@ -33,4 +33,4 @@ public class CreateCreditTransactionCommandHandler(ILogger<CreateCreditTransacti
     }
 }
 
-public record CreateCreditTransactionCommand(decimal Value, string Description) : ICommand;
+public record CreateCreditCommand(decimal Value, string Description) : ICommand;
