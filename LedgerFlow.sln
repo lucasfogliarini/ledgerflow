@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36202.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LedgerFlow", "LedgerFlow\LedgerFlow.csproj", "{F7E8F2E7-8EE6-4752-A2AC-281791377EBE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LedgerFlow.Tests.Unit", "LedgerFlow.Tests.Unit\LedgerFlow.Tests.Unit.csproj", "{AE94DA29-4A50-4969-8D84-B9D182C8C78A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F7E8F2E7-8EE6-4752-A2AC-281791377EBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7E8F2E7-8EE6-4752-A2AC-281791377EBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7E8F2E7-8EE6-4752-A2AC-281791377EBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7E8F2E7-8EE6-4752-A2AC-281791377EBE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE94DA29-4A50-4969-8D84-B9D182C8C78A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE94DA29-4A50-4969-8D84-B9D182C8C78A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE94DA29-4A50-4969-8D84-B9D182C8C78A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE94DA29-4A50-4969-8D84-B9D182C8C78A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {73DB4994-B967-4CCB-9A79-17127A4962AF}
+	EndGlobalSection
+EndGlobal
