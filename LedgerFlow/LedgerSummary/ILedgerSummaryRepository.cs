@@ -2,5 +2,5 @@
 
 public interface ILedgerSummaryRepository : IRepository
 {
-    void Add<TEntity>(TEntity entity) where TEntity : Entity;
+    void Add(LedgerSummary ledgerSummary);
 }

@@ -6,7 +6,7 @@ namespace LedgerFlow.WebApi.Endpoints.Transactions;
 internal sealed class CreateCreditEndpoint : IEndpoint
 {
     public async Task<IResult> CreateCreditAsync(
-        CreateCreditTransactionRequest request,
+        CreateCreditRequest request,
         ICommandHandler<CreateCreditCommand> handler,
         CancellationToken cancellationToken = default)
     {
@@ -29,4 +29,4 @@ internal sealed class CreateCreditEndpoint : IEndpoint
     }
 }
 
-internal sealed record CreateCreditTransactionRequest(decimal Value, string Description);
+internal sealed record CreateCreditRequest(decimal Value, string Description);

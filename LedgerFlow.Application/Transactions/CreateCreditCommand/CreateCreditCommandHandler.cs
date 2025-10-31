@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 
 namespace LedgerFlow.Application.Transactions;
 
-public class CreateCreditCommandHandler(ILogger<CreateCreditCommandHandler> logger) : ICommandHandler<CreateCreditCommand>
+public class CreateCreditCommandHandler(ITransactionRepository transactionRepository,  ILogger<CreateCreditCommandHandler> logger) : ICommandHandler<CreateCreditCommand>
 {
     public async Task<Result> HandleAsync(CreateCreditCommand command, CancellationToken cancellationToken = default)
     {
@@ -25,7 +25,8 @@ public class CreateCreditCommandHandler(ILogger<CreateCreditCommandHandler> logg
             transaction.Value,
             transaction.Description);
 
-        
+        transactionRepository.Add(transaction);
+        await transactionRepository.CommitScope.CommitAsync(cancellationToken);
 
         logger.LogInformation("Transação de crédito criada com sucesso: {TransactionId}", transaction.Id);
 

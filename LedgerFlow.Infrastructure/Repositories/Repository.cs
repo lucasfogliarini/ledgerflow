@@ -20,11 +20,6 @@ namespace LedgerFlow.Infrastructure.Repositories
         {
             return where == null ? Set<TEntity>().Any() : Set<TEntity>().Any(where);
         }
-
-        public void Add<TEntity>(TEntity entity) where TEntity : Entity
-        {
-            dbContext.Add(entity);
-        }
         public void Remove<TEntity>(TEntity entity) where TEntity : Entity
         {
             dbContext.Remove(entity);
