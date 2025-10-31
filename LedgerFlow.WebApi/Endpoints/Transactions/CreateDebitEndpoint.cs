@@ -7,7 +7,7 @@ internal sealed class CreateDebitEndpoint : IEndpoint
 {
     public async Task<IResult> CreateDebitAsync(
         CreateDebitRequest request,
-        ICommandHandler<CreateDebitCommand> handler,
+        ICommandHandler<CreateDebitCommand, Transaction> handler,
         CancellationToken cancellationToken = default)
     {
         var command = new CreateDebitCommand(request.Value, request.Description);
@@ -16,7 +16,7 @@ internal sealed class CreateDebitEndpoint : IEndpoint
         if (result.IsFailure)
             return Results.BadRequest(result.Error);
 
-        return Results.Ok();
+        return Results.Ok(result.Value);
     }
 
     public void MapEndpoint(IEndpointRouteBuilder app)

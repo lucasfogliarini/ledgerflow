@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace LedgerFlow.Infrastructure.EntityConfigurations;
 
-public class TransactionConfiguration : IEntityTypeConfiguration<Transaction>
+public class LedgerSummaryConfiguration : IEntityTypeConfiguration<LedgerSummary>
 {
-    public void Configure(EntityTypeBuilder<Transaction> builder)
+    public void Configure(EntityTypeBuilder<LedgerSummary> builder)
     {
         builder.HasKey(t => t.Id);
     }

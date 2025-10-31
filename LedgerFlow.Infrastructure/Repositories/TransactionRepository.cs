@@ -9,9 +9,9 @@ internal class TransactionRepository(LedgerFlowDbContext dbContext) : Repository
         dbContext.Add(transaction);
     }
 
-    public async Task<IEnumerable<Transaction>> GetTransactionsAsync(DateTime referenceDate, CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<Transaction>> GetTransactionsAsync(DateOnly referenceDate, CancellationToken cancellationToken = default)
     {
-        var transactions = await Set<Transaction>().Where(t=> t.CreatedAt == referenceDate).ToListAsync(cancellationToken);
+        var transactions = await Set<Transaction>().Where(t=> DateOnly.FromDateTime(t.CreatedAt).Equals(referenceDate)).ToListAsync(cancellationToken);
         return transactions;
     }
 }

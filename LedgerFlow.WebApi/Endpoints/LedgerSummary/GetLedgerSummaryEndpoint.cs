@@ -1,12 +1,13 @@
 using LedgerFlow.Application;
 using LedgerFlow.Application.LedgerSummaries;
+using Microsoft.AspNetCore.Mvc;
 
 namespace LedgerFlow.WebApi.Endpoints;
 
 internal sealed class GetLedgerSummaryEndpoint : IEndpoint
 {
     public async Task<IResult> GetLedgerSummaryAsync(
-        GetLedgerSummaryRequest request,
+        [FromBody] GetLedgerSummaryRequest request,
         IQueryHandler<GetLedgerSummaryQuery, GetLedgerSummaryResponse> handler,
         CancellationToken cancellationToken = default)
     {
@@ -16,7 +17,7 @@ internal sealed class GetLedgerSummaryEndpoint : IEndpoint
         if (result.IsFailure)
             return Results.BadRequest(result.Error);
 
-        return Results.Ok();
+        return Results.Ok(result.Value);
     }
 
     public void MapEndpoint(IEndpointRouteBuilder app)

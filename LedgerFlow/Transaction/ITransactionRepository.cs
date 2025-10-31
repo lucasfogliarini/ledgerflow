@@ -3,5 +3,5 @@
 public interface ITransactionRepository : IRepository
 {
     void Add(Transaction transaction);
-    Task<IEnumerable<Transaction>> GetTransactionsAsync(DateTime referenceDate, CancellationToken cancellationToken = default);
+    Task<IEnumerable<Transaction>> GetTransactionsAsync(DateOnly referenceDate, CancellationToken cancellationToken = default);
 }

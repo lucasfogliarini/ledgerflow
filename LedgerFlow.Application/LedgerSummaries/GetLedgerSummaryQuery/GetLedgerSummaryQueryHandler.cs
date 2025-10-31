@@ -12,9 +12,12 @@ public class GetLedgerSummaryQueryHandler(ILedgerSummaryRepository ledgerSummary
 
         var ledgerSummary = await ledgerSummaryRepository.GetAsync(query.ReferenceDate, cancellationToken);
 
-        return Result.Success(new GetLedgerSummaryResponse(ledgerSummary));
+        if(ledgerSummary is null)
+            return Result.Failure<GetLedgerSummaryResponse>("Nenhum relatório consolidado foi encontrado.");
+
+        return Result.Success(new GetLedgerSummaryResponse(ledgerSummary.ReferenceDate, ledgerSummary.Balance, ledgerSummary.TotalCredits, ledgerSummary.TotalDebits, ledgerSummary.Transactions));
     }
 }
 
 public record GetLedgerSummaryQuery(DateTime ReferenceDate) : IQuery<GetLedgerSummaryResponse>;
-public record GetLedgerSummaryResponse(LedgerSummary LedgerSummary);
+public record GetLedgerSummaryResponse(DateTime ReferenceDate, decimal Balance, decimal TotalCredits, decimal TotalDebits, IEnumerable<Transaction> Transactions);

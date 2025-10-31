@@ -7,7 +7,7 @@ internal sealed class CreateCreditEndpoint : IEndpoint
 {
     public async Task<IResult> CreateCreditAsync(
         CreateCreditRequest request,
-        ICommandHandler<CreateCreditCommand> handler,
+        ICommandHandler<CreateCreditCommand, Transaction> handler,
         CancellationToken cancellationToken = default)
     {
         var command = new CreateCreditCommand(request.Value, request.Description);
@@ -16,7 +16,7 @@ internal sealed class CreateCreditEndpoint : IEndpoint
         if (result.IsFailure)
             return Results.BadRequest(result.Error);
 
-        return Results.Ok();
+        return Results.Ok(result.Value);
     }
 
     public void MapEndpoint(IEndpointRouteBuilder app)

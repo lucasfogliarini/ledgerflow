@@ -10,7 +10,7 @@ public class ConsolidateLedgerCommandHandler(ILedgerSummaryRepository ledgerSumm
         if (command is null)
             return Result.Failure("O comando não pode ser nulo.");
 
-        var transactions = await transactionRepository.GetTransactionsAsync(command.ReferenceDate, cancellationToken);
+        var transactions = await transactionRepository.GetTransactionsAsync(DateOnly.FromDateTime(command.ReferenceDate), cancellationToken);
 
         if (!transactions.Any())
             return Result.Failure("Nenhuma transação encontrada para consolidação.");

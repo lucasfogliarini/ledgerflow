@@ -12,9 +12,9 @@ public class Transaction : Entity, IAuditable
         Description = description;
     }
 
-    public TransactionType Type { get; }
-    public decimal Value { get; }
-    public string Description { get; }
+    public TransactionType Type { get; private set; }
+    public decimal Value { get; private set; }
+    public string Description { get; private set; }
     public DateTime CreatedAt { get; private set; } = DateTime.Now;
     public DateTime UpdatedAt { get; private set; } = DateTime.Now;    
 
