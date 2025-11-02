@@ -18,18 +18,19 @@ public static class DependencyInjection
         builder.AddOutputCache();
         builder.Services.AddOpenApi();
         builder.AddJwtBearerAuthentication();
+
     }
     public static void UseWebApi(this WebApplication app)
     {
-        app.UseOutputCache();//precisa ser antes do MapEndpoints
+        app.UseAuthentication();
+        app.UseAuthorization();
+        app.UseOutputCache();//precisa ser antes do MapEndpoints e depois da authenticação
         app.MapEndpoints();
         app.MapHealthChecks();
         if (app.Environment.IsDevelopment())
         {
             app.MapOpenApi();
         }
-        app.UseAuthentication();
-        app.UseAuthorization();
     }
 
     public static IServiceCollection AddEndpoints(this IServiceCollection services)
@@ -92,17 +93,14 @@ public static class DependencyInjection
     {
         builder.Services.AddOutputCache(options =>
         {
-            options.AddBasePolicy(policy =>
-            {
-                policy.Expire(TimeSpan.FromSeconds(30));
-            });
             options.AddPolicy("per-user", policy =>
             {
                 policy.VaryByValue(context =>
                 {
-                    var userId = context.User.FindFirst("sub")?.Value ?? "anonymous";
-                    return new KeyValuePair<string, string>("userId", userId);
+                    var username = context.User.FindFirst("preferred_username")?.Value ?? "anonymous";
+                    return new KeyValuePair<string, string>(nameof(username), username);
                 });
+                policy.Expire(TimeSpan.FromSeconds(30));
             });
         });
     }

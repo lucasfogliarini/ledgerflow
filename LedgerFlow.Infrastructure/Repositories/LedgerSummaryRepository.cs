@@ -12,6 +12,6 @@ internal class LedgerSummaryRepository(LedgerFlowDbContext dbContext) : Reposito
 
     public async Task<LedgerSummary> GetAsync(DateTime ReferenceDate, CancellationToken cancellationToken = default)
     {
-        return await Set<LedgerSummary>().Include(e=>e.Transactions).FirstOrDefaultAsync(e=>e.ReferenceDate ==  ReferenceDate, cancellationToken);
+        return await Set<LedgerSummary>().Include(e=>e.Transactions).FirstOrDefaultAsync(e=>e.ReferenceDate.Date ==  ReferenceDate.Date, cancellationToken);
     }
 }
