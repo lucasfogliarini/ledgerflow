@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using OpenTelemetry.Logs;
 using System.Reflection;
 using System.Text.Json;
 
@@ -11,14 +12,13 @@ public static class DependencyInjection
 {
     public static void AddWebApi(this WebApplicationBuilder builder)
     {
-        builder.Services.AddApplication(builder.Configuration);
+        builder.AddApplication();
         builder.Services.AddEndpoints();
         builder.AddHealthChecks();
         builder.Services.AddProblemDetails();
         builder.AddOutputCache();
         builder.Services.AddOpenApi();
         builder.AddJwtBearerAuthentication();
-
     }
     public static void UseWebApi(this WebApplication app)
     {
