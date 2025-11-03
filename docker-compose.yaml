@@ -6,7 +6,7 @@ services:
       dockerfile: LedgerFlow.LedgerSummaries.WebApi/Dockerfile    
     env_file: .env
     ports:
-      - "2002:8080"
+      - "2003:8080"
     networks:
       - ledgerflow
     
@@ -18,9 +18,23 @@ services:
       dockerfile: LedgerFlow.Transactions.WebApi/Dockerfile    
     env_file: .env
     ports:
-      - "2001:8080"
+      - "2002:8080"
     networks:
-      - ledgerflow    
+      - ledgerflow
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver-ledgerflow
+    restart: unless-stopped
+    environment:
+      SA_PASSWORD: "Ledgerflow!123"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "2001:1433"
+    volumes:
+    - sql_data:/var/opt/mssql
+    networks:
+      - ledgerflow
 
   keycloak:
     image: quay.io/keycloak/keycloak:latest
@@ -43,3 +57,5 @@ networks:
 
 volumes:
   keycloak_data:
+  sql_data:
+
