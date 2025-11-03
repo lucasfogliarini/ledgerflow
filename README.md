@@ -15,7 +15,7 @@ A arquitetura contempla dois principais serviços:
 - [🧪 Testes](#testes)
 - [🧱 Arquitetura e Design](#arquitetura-e-design)
 
-## 🧩 Setup
+## 🧩Setup
 
 Abaixo estão as etapas para configurar o ambiente local.
 
@@ -55,7 +55,7 @@ O sistema utiliza o **Keycloak** como provedor de identidade.
 
 ---
 
-## ⚙️ Funcionalidades
+## ⚙️Funcionalidades
 
 ```gherkin
   Cenário: Criar uma transação de crédito com valores válidos
@@ -92,7 +92,7 @@ Cenário: Obter relatórios consolidados de uma data específica
 
 ---
 
-## 🧪 Testes
+## 🧪Testes
 
 ### Testes unitários
 
@@ -132,7 +132,7 @@ k6 run k6.js
 
 ---
 
-## 🧱 Arquitetura e Design
+## 🧱Arquitetura e Design
 
 A solução foi desenhada seguindo princípios de **Domain-Driven Design (DDD)** e **Clean Architecture**, com clara separação entre camadas:
 
