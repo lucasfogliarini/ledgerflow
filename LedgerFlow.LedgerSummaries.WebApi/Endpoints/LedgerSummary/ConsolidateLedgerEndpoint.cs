@@ -1,7 +1,7 @@
 using LedgerFlow.Application;
 using LedgerFlow.Application.LedgerSummaries;
 
-namespace LedgerFlow.WebApi.Endpoints;
+namespace LedgerFlow.LedgerSummaries.WebApi.Endpoints;
 
 internal sealed class ConsolidateLedgerEndpoint : IEndpoint
 {

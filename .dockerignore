@@ -1,0 +1,28 @@
+# Diretórios compilados
+bin/
+obj/
+out/
+publish/
+artifacts/
+
+# Controle de versão
+.git/
+.gitignore
+
+# IDEs e build system
+.vs/
+.vscode/
+.idea/
+
+# Dependências locais
+node_modules/
+packages/
+
+# Arquivos temporários
+*.log
+*.tmp
+*.swp
+
+# Outros
+docker-compose.override.yml
+.env

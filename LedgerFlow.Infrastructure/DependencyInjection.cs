@@ -79,8 +79,8 @@ namespace Microsoft.Extensions.DependencyInjection
                 .WithLogging(loggingBuilder =>
                 {
                     loggingBuilder
-                        .AddOtlpExporter()
-                        .AddConsoleExporter();
+                        .AddOtlpExporter();
+                        //.AddConsoleExporter();
                 });
 
             builder.Logging.AddOpenTelemetry(options =>

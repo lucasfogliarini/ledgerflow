@@ -5,7 +5,7 @@ WORKDIR /app
 
 COPY . .
 
-RUN dotnet publish "LedgerFlow.WebApi/LedgerFlow.WebApi.csproj" -c Release -o /app/publish
+RUN dotnet publish "LedgerFlow.Transactions.WebApi/LedgerFlow.Transactions.WebApi.csproj" -c Release -o /app/publish
 
 # Etapa final com imagem de runtime
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS runtime
@@ -14,4 +14,4 @@ WORKDIR /app
 COPY --from=build /app/publish .
 
 EXPOSE 8080
-ENTRYPOINT ["dotnet", "LedgerFlow.WebApi.dll"]
+ENTRYPOINT ["dotnet", "LedgerFlow.Transactions.WebApi.dll"]

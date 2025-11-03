@@ -1,4 +1,4 @@
-﻿namespace LedgerFlow.WebApi;
+﻿namespace LedgerFlow.LedgerSummaries.WebApi;
 
 public interface IEndpoint
 {

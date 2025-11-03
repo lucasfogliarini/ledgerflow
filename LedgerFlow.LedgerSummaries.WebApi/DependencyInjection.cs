@@ -1,7 +1,8 @@
-﻿using LedgerFlow.WebApi;
+﻿using LedgerFlow.LedgerSummaries.WebApi;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.IdentityModel.Tokens;
 using OpenTelemetry.Logs;
 using System.Reflection;
 using System.Text.Json;
@@ -118,6 +119,12 @@ public static class DependencyInjection
              options.Audience = jwtSettings.Audience;
              options.RequireHttpsMetadata = false;
              options.SaveToken = true;
+
+             options.TokenValidationParameters = new TokenValidationParameters
+             {
+                 // Necessário pois o Keycloak emite issuer com localhost enquanto a API o acessa via host.docker.internal.
+                 ValidateIssuer = false
+             };
          });
         builder.Services.AddAuthorization();
     }

@@ -1,16 +1,16 @@
 using LedgerFlow.Application.Transactions;
 using LedgerFlow.Application;
 
-namespace LedgerFlow.WebApi.Endpoints;
+namespace LedgerFlow.LedgerSummaries.WebApi.Endpoints;
 
-internal sealed class CreateDebitEndpoint : IEndpoint
+internal sealed class CreateCreditEndpoint : IEndpoint
 {
-    public async Task<IResult> CreateDebitAsync(
-        CreateDebitRequest request,
-        ICommandHandler<CreateDebitCommand, Transaction> handler,
+    public async Task<IResult> CreateCreditAsync(
+        CreateCreditRequest request,
+        ICommandHandler<CreateCreditCommand, Transaction> handler,
         CancellationToken cancellationToken = default)
     {
-        var command = new CreateDebitCommand(request.Value, request.Description);
+        var command = new CreateCreditCommand(request.Value, request.Description);
         var result = await handler.HandleAsync(command, cancellationToken);
 
         if (result.IsFailure)
@@ -21,12 +21,12 @@ internal sealed class CreateDebitEndpoint : IEndpoint
 
     public IEndpointConventionBuilder MapEndpoint(IEndpointRouteBuilder app)
     {
-        return app.MapPost($"{Routes.Transactions}/debit", CreateDebitAsync)
+        return app.MapPost($"{Routes.Transactions}/credit", CreateCreditAsync)
            .WithTags(Routes.Transactions)
            .Produces(StatusCodes.Status200OK)
            .Produces(StatusCodes.Status400BadRequest)
-           .WithSummary("Cria uma nova transação de débito.");
+           .WithSummary("Cria uma nova transação de crédito.");
     }
 }
 
-internal sealed record CreateDebitRequest(decimal Value, string Description);
+internal sealed record CreateCreditRequest(decimal Value, string Description);

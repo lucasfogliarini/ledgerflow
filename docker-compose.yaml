@@ -1,34 +1,45 @@
 services:
-  webapi:
+  ledgersummaries-api:
+    container_name: ledgersummaries-api
     build:
       context: .
-      dockerfile: LedgerFlow.WebApi/Dockerfile
-    container_name: LedgerFlow.WebApi
+      dockerfile: LedgerFlow.LedgerSummaries.WebApi/Dockerfile    
+    env_file: .env
+    ports:
+      - "2002:8080"
+    networks:
+      - ledgerflow
+    
+
+  transactions-api:
+    container_name: transactions-api
+    build:
+      context: .
+      dockerfile: LedgerFlow.Transactions.WebApi/Dockerfile    
+    env_file: .env
     ports:
       - "2001:8080"
-    env_file: .env
+    networks:
+      - ledgerflow    
 
   keycloak:
     image: quay.io/keycloak/keycloak:latest
     container_name: keycloak-ledgerflow
-    restart: unless-stopped #on-failure, 
+    restart: unless-stopped #on-failure, always
     environment:
-      KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
     command: start-dev
     ports:
       - "2000:8080"
     networks:
       - ledgerflow
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:2000/realms/master"]
-      interval: 15s
-      timeout: 10s
-      retries: 10
+    volumes:
+      - keycloak_data:/opt/keycloak/data
 
 networks:
   ledgerflow:
     driver: bridge
 
 volumes:
-  kafka_data:
+  keycloak_data:
