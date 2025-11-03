@@ -29,32 +29,29 @@ No diretório raiz do projeto, execute:
 docker-compose up -d
 ```
 
-Esse comando inicializa todos os containers necessários (banco de dados SQL Server, APIs, etc).
+Esse comando inicializa todos os containers necessários (banco de dados SQL Server, APIs, Keycloak, etc).
 
 ### 2. Aplicar as migrações do banco de dados
 
-Após os containers estarem rodando, aplique as migrações executando o comando a seguir no terminal (dentro do projeto correspondente):
+Após os containers estarem rodando, aplique as migrações executando o comando a seguir no terminal:
 
-```bash
-dotnet ef database update --project LedgerFlow.Infrastructure
+Ainda no diretório raiz (LedgerFlow), execute:
+```
+ dotnet tool install --global dotnet-ef
+ dotnet ef database update --startup-project LedgerFlow.Transactions.WebApi/LedgerFlow.Transactions.WebApi.csproj
 ```
 
-> Caso queira rodar a partir da raiz da solução, use:
->
-> ```bash
-> dotnet ef database update --startup-project LedgerFlow.WebApi --project LedgerFlow.Infrastructure
-> ```
-
-Isso criará o schema e as tabelas necessárias no banco de dados configurado via `appsettings.json`.
+Isso criará o schema e as tabelas necessárias no banco de dados configurado via `appsettings.Development.json`.
 
 ### 3. Importar realm e clients do Keycloak
 
 O sistema utiliza o **Keycloak** como provedor de identidade.
 
-1. Acesse a interface administrativa do Keycloak (`http://localhost:2000/admin`).
-2. Vá até **Realms → Import**.
+1. Acesse a interface administrativa do Keycloak [Master Admin Console](http://localhost:2000/admin).
+2. Vá até **Manage realms → Create Realm → Browse Resource file**.
 3. Faça upload do arquivo `ledgerflow-realm-export.json` fornecido com o projeto.
-4. Confirme a criação do usuário (admin) e do client público (legderflow).
+4. Entre no [Ledger Admin Console](http://localhost:2000/admin/ledgerflow/console) com usuário usuário **admin** e senha **admin** para testar ou customizar algo a mais.
+5. Entre em [clients](http://localhost:2000/admin/ledgerflow/console/#/ledgerflow/clients) e confirme a criação do client público (legderflow).
 
 ---
 

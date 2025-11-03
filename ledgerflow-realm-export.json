@@ -60,7 +60,8 @@
       ]
     }
   ],
-  "users": [{
+  "users": [
+    {
       "username": "admin",
       "enabled": true,
       "emailVerified": true,
@@ -74,9 +75,15 @@
           "temporary": false
         }
       ],
-      "realmRoles": ["default-roles-ledgerflow-realm","realm-admin"],
+      "realmRoles": [ "default-roles-ledgerflow-realm"],
+      "clientRoles": {
+        "realm-management": [
+          "realm-admin"
+        ]
+      },
       "requiredActions": []
-    }],
+    }
+  ],
   "id": "42298141-e494-4af0-9533-70f08da9bd5f",
   "realm": "ledgerflow",
   "notBefore": 0,
