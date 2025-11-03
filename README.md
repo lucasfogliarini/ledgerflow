@@ -13,7 +13,7 @@ A arquitetura contempla dois principais serviços:
 - [🧩 Setup](#setup)
 - [⚙️ Funcionalidades](#funcionalidades)
 - [🧪 Testes](#testes)
-- [🧱 Design da solução](#design-da-solução)
+- [🧱 Arquitetura e Design](#arquitetura-e-design)
 
 ## 🧩 Setup
 
@@ -104,22 +104,35 @@ Para executá-los:
 dotnet test LedgerFlow.Tests.Unit
 ```
 
-Os resultados detalham quais casos de uso e entidades foram validados.
+### Testes Funcionais com Postman
+As coleções do Postman permitem validar o comportamento funcional das APIs do LedgerFlow, simulando chamadas reais aos endpoints de transações e consolidados.
+1. Abra o Postman e clique em **Import**.  
+2. Selecione os arquivos das coleções:  
+   `transactions-api.postman_collection.json` e `ledgersummaries-api.postman_collection.json`.
+3. Após a importação, abra qualquer requisição e vá até a aba **Authorization**.  
+4. Clique em **Get New Access Token** — as configurações de OAuth2 já estarão preenchidas.  
+5. Clique em **Use Token** para aplicá-lo automaticamente nas requisições.  
+6. Execute as chamadas das rotas para validar o comportamento das APIs.
 
-### Testes de performance
 
-Para medir o desempenho das APIs (principalmente em cenários de alta carga no consolidado), utilize o script configurado em `k6.js` na raiz do projeto.:
+### Testes de Performance
+
+Para medir o desempenho das APIs, utilize o script configurado em `k6.js` na raiz do projeto.:
+
+1. Abra o arquivo k6.js
+2. Selecione o endpoint que deseja testar setando na variável url do objeto request.
+3. Busque o token usando a aba Authorization de qualquer coleção importada pelo postman.
+4. Adicione o token na variável token no script k6.js
+5. Execute:
 
 ```bash
 cd LedgerFlow
 k6 run k6.js
 ```
 
-Os resultados indicam latência média, throughput e taxa de erros — essenciais para avaliar se o sistema se mantém dentro do limite de 5% de perda de requisições.
-
 ---
 
-## 🧱 Design da solução
+## 🧱 Arquitetura e Design
 
 A solução foi desenhada seguindo princípios de **Domain-Driven Design (DDD)** e **Clean Architecture**, com clara separação entre camadas:
 

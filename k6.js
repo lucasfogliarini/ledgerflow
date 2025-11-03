@@ -19,19 +19,19 @@ const debitEndpoint = `${transactionApi}/transactions/debit`;
 const creditEndpoint = `${transactionApi}/transactions/credit`;
 
 const ledgerSummariesApi = "https://localhost:2003";
-const consolidateLedgerSummary = `${ledgerSummariesApi}/ledger_summaries/consolidate`;
-const getLedgerSummary = `${ledgerSummariesApi}/ledger_summaries`;
+const consolidateLedgerSummaryEndpoint = `${ledgerSummariesApi}/ledger_summaries/consolidate`;
+const getLedgerSummaryEndpoint = `${ledgerSummariesApi}/ledger_summaries`;
 
 const token = "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJEdkVoZlNMbWtmMC1BZnphS1JTMmhJY2tHa0Jib2dFT3JROVFaQW5tUjZjIn0.eyJleHAiOjE3NjIxOTQyMDYsImlhdCI6MTc2MjE5MzkwNiwiYXV0aF90aW1lIjoxNzYyMTkyMTMyLCJqdGkiOiJvbnJ0YWM6NTM4NzRlYjctMTFhZS1iNWU4LTBiYWQtYTc2NWZiNTJkNDgzIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDoyMDAwL3JlYWxtcy9sZWRnZXJmbG93IiwiYXVkIjpbImxlZGdlcmZsb3ctYXBpIiwicmVhbG0tbWFuYWdlbWVudCIsImFjY291bnQiXSwic3ViIjoiYWFjYmVlZmEtNmM2OC00NzBlLWE5OTEtMTlhYWQzN2IxMDFhIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoibGVkZ2VyZmxvdyIsInNpZCI6IjE1MDBhOTFkLTgwYWYtNjM5Zi0xN2I4LWM2NTJmMjhiMDAxNyIsImFjciI6IjAiLCJhbGxvd2VkLW9yaWdpbnMiOlsiKiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiZGVmYXVsdC1yb2xlcy1sZWRnZXJmbG93Iiwib2ZmbGluZV9hY2Nlc3MiLCJ1bWFfYXV0aG9yaXphdGlvbiJdfSwicmVzb3VyY2VfYWNjZXNzIjp7InJlYWxtLW1hbmFnZW1lbnQiOnsicm9sZXMiOlsidmlldy1yZWFsbSIsInZpZXctaWRlbnRpdHktcHJvdmlkZXJzIiwibWFuYWdlLWlkZW50aXR5LXByb3ZpZGVycyIsImltcGVyc29uYXRpb24iLCJyZWFsbS1hZG1pbiIsImNyZWF0ZS1jbGllbnQiLCJtYW5hZ2UtdXNlcnMiLCJxdWVyeS1yZWFsbXMiLCJ2aWV3LWF1dGhvcml6YXRpb24iLCJxdWVyeS1jbGllbnRzIiwicXVlcnktdXNlcnMiLCJtYW5hZ2UtZXZlbnRzIiwibWFuYWdlLXJlYWxtIiwidmlldy1ldmVudHMiLCJ2aWV3LXVzZXJzIiwidmlldy1jbGllbnRzIiwibWFuYWdlLWF1dGhvcml6YXRpb24iLCJtYW5hZ2UtY2xpZW50cyIsInF1ZXJ5LWdyb3VwcyJdfSwiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJvcGVuaWQgZW1haWwgcHJvZmlsZSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJuYW1lIjoiTHVjYXMgRm9nbGlhcmluaSIsInByZWZlcnJlZF91c2VybmFtZSI6Imx1Y2FzZm9nbGlhcmluaUBnbWFpbC5jb20iLCJnaXZlbl9uYW1lIjoiTHVjYXMiLCJmYW1pbHlfbmFtZSI6IkZvZ2xpYXJpbmkiLCJlbWFpbCI6Imx1Y2FzZm9nbGlhcmluaUBnbWFpbC5jb20ifQ.sHxz8PdmythaU95eR9IBrpzi4W_cAKg4O8h0qaKuxkL3FCENZfTfIpVG3ZYNoDRHLP7U4uNzmV-V4zEeu_UI8iNpO_G6rBiU4TXMyBQJnbmXURGyKx1MS7XyFbeG9MJhEmT2AVbM-D-OqELyfU8Q9H8wsDoUIn8JAMVqNp4Cq03CM3EjmOjmLzAKtBAGIfAXScKDpXDPJ6JidMMvg2L-DgUVN-YWbZZXLmPlxTL5DJhO_PYtO2opa1iG7ZXd1iE1vLWF4_vtR-YKMKm4HXXMsiqPspcjYkARVa8WT2wFHHqAq1fFUqcFcK3-pmjSrPTohjDe51bsmKNT-_sKBiL3Mg";
 const request = {
   method: 'POST', // POST, GET, PUT, DELETE
     url: creditEndpoint,
-  headers: {
-    Authorization: `Bearer ${token}`,
-    'Content-Type': 'application/json',
-    'Accept': 'text/plain',
-    'User-Agent': 'k6',
-  },
+    headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        'Accept': 'text/plain',
+        'User-Agent': 'k6',
+      },
     body: JSON.stringify({
         "value": 100,
         "description": "venda"
