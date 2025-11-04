@@ -1,6 +1,7 @@
 ﻿# LedgerFlow
 
-LedgerFlow é uma solução desenvolvida para controle e consolidação de lançamentos financeiros diários (débitos e créditos). O projeto foi criado com foco em escalabilidade, resiliência e boas práticas de arquitetura de software, aplicando princípios de DDD, separação de contextos e testes automatizados.
+O LedgerFlow é um sistema de gestão financeira projetado para registrar lançamentos de débito e crédito e gerar consolidações diárias de saldo.
+A solução adota uma arquitetura moderna baseada em DDD (Domain-Driven Design), com foco em escalabilidade, resiliência e desacoplamento de serviços, promovendo uma base sólida para evolução contínua e confiável.
 
 A arquitetura contempla dois principais serviços e uma aplicação front-end que integra as funcionalidades em uma experiência unificada:
 
@@ -11,9 +12,9 @@ A arquitetura contempla dois principais serviços e uma aplicação front-end qu
 
 ---
 
-## Resumo
+## Estrutura do Projeto
 
-A leitura do projeto segue uma sequência lógica que reflete o raciocínio de construção da solução: primeiro, apresentam-se as funcionalidades, que estabelecem o propósito e o domínio do sistema; depois, a arquitetura e o design, que mostram as decisões técnicas que sustentam essas funcionalidades; em seguida, o setup, detalhando como executar o ambiente; e, por fim, os testes, que validam o comportamento e a qualidade da implementação.
+A estrutura do projeto foi pensada para conduzir o leitor pela lógica da solução: inicia nas __Funcionalidades__, que contextualizam o domínio e os objetivos do sistema; segue para a __Arquitetura e o Design__, onde se detalham as decisões técnicas; continua com o __Setup__, que orienta a execução do ambiente; e finaliza com os __Testes__, responsáveis por garantir qualidade e conformidade.
 
 - [⚙️ Funcionalidades](#funcionalidades)
 - [🧱 Arquitetura e Design](#arquitetura-e-design)
@@ -29,7 +30,7 @@ O momento de definir essas funcionalidades é também um ponto crucial de alinha
 É nesse estágio que o [EventStorming](https://www.eventstorming.com/) pode desempenhar papel fundamental para a modelagem de __sistemas complexos__, promovendo uma visão compartilhada do fluxo de eventos, identificando comandos, agregados e fronteiras de contexto que darão forma à arquitetura do sistema.
 
 ```gherkin
-  Cenário: Criar uma transação de crédito com valores válidos
+  Cenário 1: Criar uma transação de crédito com valores válidos
     Dado que o usuário informa um valor maior que zero
     Quando o sistema cria uma transação de crédito
     Então a transação deve ser registrada com sucesso
@@ -38,7 +39,7 @@ O momento de definir essas funcionalidades é também um ponto crucial de alinha
 ```
 
 ```gherkin
- Cenário: Criar uma transação de débito com valores válidos
+ Cenário 2: Criar uma transação de débito com valores válidos
     Dado que o usuário informa um valor maior que zero
     Quando o sistema cria uma transação de débito
     Então a transação deve ser registrada com sucesso
@@ -47,14 +48,14 @@ O momento de definir essas funcionalidades é também um ponto crucial de alinha
 ```
 
 ```gherkin
- Cenário: Consolidação de Saldos (saldo, créditos e débitos)
+  Cenário 3: Consolidação de Saldos (saldo, créditos e débitos)
     Dado que existe uma lista de transações válidas (créditos e débitos)
     Quando o usuário solicitar a consolidação dos saldos
     Então o sistema deve calcular e salvar o total de créditos, débitos e saldo.
 ```
 
 ```gherkin
-Cenário: Obter Saldos Consolidados de uma data específica
+  Cenário 4: Obter Saldos Consolidados de uma data específica
     Dado que o usuário informa uma data de referência válida
     E existam Saldos Consolidados para essa data
     Quando o sistema processa a requisição de consulta
@@ -66,14 +67,14 @@ Cenário: Obter Saldos Consolidados de uma data específica
 ## 🧱Arquitetura e Design
 
 A arquitetura do **LedgerFlow** foi concebida com base em princípios de **DDD (Domain-Driven Design)** e **Clean Architecture**, priorizando modularidade, escalabilidade e resiliência.  
-Ela é sustentada por decisões arquiteturais registradas formalmente em **ADRs (Architectural Decision Records)**, que documentam o racional técnico por trás das escolhas de design do sistema — desde o padrão de microsserviços até as estratégias de segurança, observabilidade e escalabilidade.
+Ela é sustentada por decisões arquiteturais registradas formalmente em **ADRs (Architectural Decision Records)**, que documentam o racional técnico por trás das escolhas de design do sistema, desde o padrão de microsserviços até as estratégias de segurança, observabilidade e escalabilidade.
 
 Essas decisões podem ser consultadas em detalhes no arquivo:
 
 📘 [ADRs.md](./docs/ADRs.md)
 
 
-### C4 Diagrams
+### Diagrama C4
 
 O diagrama abaixo apresenta a visão C4 de Nível 2 (App/Container) do sistema LedgerFlow, ilustrando os principais componentes, suas responsabilidades e interações dentro do ecossistema.
 
@@ -130,7 +131,10 @@ Ainda no diretório raiz (LedgerFlow), execute:
  dotnet ef database update --startup-project LedgerFlow.Transactions.WebApi/LedgerFlow.Transactions.WebApi.csproj
 ```
 
-Isso criará o schema e as tabelas necessárias no banco de dados configurado via `appsettings.Development.json`.
+Isso criará o schema e as tabelas necessárias no banco de dados configurado via `appsettings.json`.  
+
+⚠️ <small>Aviso: As credenciais e senhas presentes nos arquivos de configuração (appsettings.Development.json, docker-compose.yml, etc.) são utilizadas apenas para execução local e têm caráter estritamente práticos para o setup.
+Em um ambiente real, essas informações seriam protegidas por mecanismos seguros.</small>
 
 ### 3. Importar realm e clients do Keycloak
 

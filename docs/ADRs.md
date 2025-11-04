@@ -71,19 +71,21 @@ Requer configuração cuidadosa de variáveis de ambiente e integração com o K
 
 ---
 
-## 7. Observabilidade: OpenTelemetry (Planejado)
+## 7. Observabilidade: OpenTelemetry
 **Decisão:** Adotar **OpenTelemetry** para coleta de métricas, logs estruturados e traces distribuídos.
 
 **Motivação:**  
-Fundamental para monitorar a saúde e desempenho dos serviços, além de suportar análise de falhas e rastreabilidade entre APIs.
+A observabilidade é essencial para monitorar a saúde e o desempenho dos serviços, além de fornecer rastreabilidade entre APIs e suporte à análise de falhas.
+O OpenTelemetry foi escolhido por ser um padrão aberto e extensível, compatível com a maioria das plataformas de observabilidade do mercado.
+Essa característica garante flexibilidade para integração tanto com soluções de baixo custo (como Prometheus, Zipkin ou Grafana Tempo), quanto com plataformas corporativas e completas, como Dynatrace, Datadog ou New Relic.
 
 **Evolução futura:**  
-Integração com **Prometheus** e **Grafana** para visualização de métricas operacionais e SLAs.
+Integração com **Dynatrace** para visualização de métricas operacionais e SLAs.
 
 ---
 
 ## 8. Deploy e Infraestrutura: Docker + Kubernetes
-**Decisão:** Containerizar todos os serviços e orquestrar via **Kubernetes (K8s)**.
+**Decisão:** Containerizar os serviços e orquestrar via **Kubernetes (K8s)**.
 
 **Motivação:**  
 Garantir portabilidade, escalabilidade e isolamento entre componentes, permitindo deploy consistente em qualquer ambiente.
