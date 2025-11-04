@@ -134,6 +134,22 @@ k6 run k6.js
 
 ## 🧱Arquitetura e Design
 
+
+### C4 Diagrams
+
+O diagrama abaixo apresenta a visão C4 de Nível 2 (App/Container) do sistema LedgerFlow, ilustrando os principais componentes, suas responsabilidades e interações dentro do ecossistema.
+
+As WebApis e o Keycloak estão preparadas para execução em Kubernetes (K8s), promovendo escalabilidade, isolamento de responsabilidades e resiliência.
+
+<img src="./ledgerflow-app-diagram.png" alt="LedgerFlow App Diagram" width="800">
+
+
+🔗 [Explorar o diagrama no IcePanel](https://s.icepanel.io/5EJNqZk1BJKyQN/cv24)
+
+<small>Explore para navegar interativamente pelo diagrama, visualizar as conexões entre os componentes e até subir para o Nível 1 (System Context Diagram)</small>
+
+### Domain-Driven Design e Clean Architecture
+
 A solução foi desenhada seguindo princípios de **Domain-Driven Design (DDD)** e **Clean Architecture**, com clara separação entre camadas:
 
 * **LedgerFlow** — projeto de domínio, contém entidades, agregados, eventos de domínio e regras de negócio.
@@ -142,10 +158,9 @@ A solução foi desenhada seguindo princípios de **Domain-Driven Design (DDD)**
 * **LedgerFlow.Transactions.WebApi** — expõe os endpoints responsáveis pelo registro e consulta de transações (créditos e débitos).
 * **LedgerFlow.LedgerSummaries.WebApi** — expõe os endpoints responsáveis pela consolidação e consulta dos saldos diários.
 
+#### Referências
 
-A arquitetura também contempla:
-
-* **Observabilidade:** instrumentação com OpenTelemetry.
-* **Segurança:** autenticação via Keycloak (OpenID Connect).
+- [Domain-Driven Design: Tackling Complexity in the Heart of Software, Eric Evans, 2003](http://chatgpt.com/?q=Livro%20Domain-Driven%20Design,%20Eric%20Evans)
+- [Projetar um microsserviço orientado a DDD, Learn Microsoft](https://learn.microsoft.com/pt-br/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/ddd-oriented-microservice)
 
 ---
