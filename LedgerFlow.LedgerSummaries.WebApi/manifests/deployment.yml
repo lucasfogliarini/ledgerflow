@@ -35,10 +35,12 @@ spec:
                 name: secret-ref
                 optional: true
           livenessProbe:
-            tcpSocket:
+            httpGet:
+              path: /health
               port: 8080
           readinessProbe:
-            tcpSocket:
+            httpGet:
+              path: /health
               port: 8080
             periodSeconds: 5
             timeoutSeconds: 5
