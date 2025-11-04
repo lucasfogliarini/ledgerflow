@@ -22,6 +22,15 @@ services:
     networks:
       - ledgerflow
 
+  redis:
+    image: redis:7-alpine
+    container_name: redis-ledgerflow
+    restart: unless-stopped
+    ports:
+        - "2004:6379"
+    networks:
+      - ledgerflow
+
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2022-latest
     container_name: sqlserver-ledgerflow
@@ -49,7 +58,7 @@ services:
     networks:
       - ledgerflow
     volumes:
-      - keycloak_data:/opt/keycloak/data
+      - keycloak_data:/opt/keycloak/data  
 
 networks:
   ledgerflow:

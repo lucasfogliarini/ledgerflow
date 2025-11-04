@@ -19,6 +19,7 @@ public static class DependencyInjection
         builder.AddCors();
         builder.Services.AddOpenApi();
         builder.AddJwtBearerAuthentication();
+        builder.AddDistributedCache();
     }
     public static void UseWebApi(this WebApplication app)
     {
@@ -134,4 +135,24 @@ public static class DependencyInjection
         });
     }
     public record CorsSettings(string[] AllowedOrigins);
+    public static void AddDistributedCache(this WebApplicationBuilder builder)
+    {
+        var redisSettings = builder.Configuration
+            .GetSection(nameof(RedisSettings))
+            .Get<RedisSettings>();
+
+        if (redisSettings is null || string.IsNullOrWhiteSpace(redisSettings.Configuration))
+        {
+            builder.Services.AddDistributedMemoryCache();
+            return;
+        }
+
+        builder.Services.AddStackExchangeRedisCache(options =>
+        {
+            options.Configuration = redisSettings.Configuration;
+            options.InstanceName = redisSettings.InstanceName ?? "LedgerFlow:";
+        });
+        builder.Services.AddHealthChecks().AddRedis(redisSettings.Configuration, "redis-ledgerflow");
+    }
+    public record RedisSettings(string? Configuration, string? InstanceName = null);
 }

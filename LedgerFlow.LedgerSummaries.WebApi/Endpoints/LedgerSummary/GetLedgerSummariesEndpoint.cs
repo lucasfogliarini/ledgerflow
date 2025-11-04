@@ -1,6 +1,9 @@
 using LedgerFlow.Application;
 using LedgerFlow.Application.LedgerSummaries;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Distributed;
+using System.Security.Claims;
+using System.Text.Json;
 
 namespace LedgerFlow.LedgerSummaries.WebApi.Endpoints;
 
@@ -9,13 +12,37 @@ internal sealed class GetLedgerSummariesEndpoint : IEndpoint
     public async Task<IResult> GetLedgerSummariesAsync(
         [FromBody] GetLedgerSummaryRequest request,
         IQueryHandler<GetLedgerSummariesQuery, GetLedgerSummariesResponse> handler,
+        IDistributedCache cache,
+        ILogger<GetLedgerSummariesEndpoint> logger,
+        HttpContext httpContext,
         CancellationToken cancellationToken = default)
     {
+        if (request is null)
+            return Results.BadRequest("O corpo da requisição não pode ser nulo.");
+
+        var userId = httpContext.User.FindFirstValue("sid");
+        var cacheKey = $"ledger-summaries:{request.ReferenceDate:yyyy-MM-dd}-sid:{userId}";
+
+        var cached = await cache.GetStringAsync(cacheKey, cancellationToken);
+        if (cached is not null)
+        {
+            logger.LogInformation("Cache hit para {CacheKey}", cacheKey);
+            var cachedResponse = JsonSerializer.Deserialize<GetLedgerSummariesResponse>(cached);
+            return Results.Ok(cachedResponse);
+        }
+
         var query = new GetLedgerSummariesQuery(request.ReferenceDate);
         var result = await handler.HandleAsync(query, cancellationToken);
 
         if (result.IsFailure)
             return Results.BadRequest(result.Error);
+
+        await cache.SetStringAsync(
+            cacheKey,
+            JsonSerializer.Serialize(result.Value),
+            cancellationToken);
+
+        logger.LogInformation("Cache salvo para {CacheKey}", cacheKey);
 
         return Results.Ok(result.Value);
     }
