@@ -95,7 +95,26 @@ Demanda infraestrutura e conhecimento operacional de K8s, mas viabiliza escalabi
 
 ---
 
-## 9. Estratégia de Testes
+## 9. Caching: Redis para endpoints de alta demanda
+
+**Decisão:** Implementar cache distribuído com Microsoft.Extensions.Caching.StackExchangeRedis.
+
+**Motivação:**
+Determinados endpoints do sistema, especialmente aqueles expostos a um alto volume de requisições (como consultas de consolidação), demandavam uma estratégia de cache eficiente para reduzir a carga no banco de dados e melhorar o tempo de resposta.
+
+Embora o Output Caching Middleware nativo do ASP.NET Core ofereça uma solução simples e performática, ele não suporta requisições que incluam o cabeçalho Authorization, o que inviabilizou seu uso em endpoints protegidos por autenticação JWT.
+
+Por isso, optou-se por uma implementação direta de cache distribuído utilizando o Redis por meio do pacote Microsoft.Extensions.Caching.StackExchangeRedis, que permite controle programático sobre o ciclo de vida dos dados armazenados e compatibilidade com APIs autenticadas.
+
+**Trade-offs:**
+A abordagem manual de caching aumenta a complexidade do código, exigindo políticas explícitas de invalidação e definição de chaves únicas por usuário ou contexto. Em contrapartida, garante maior flexibilidade e compatibilidade com cenários de autenticação, mantendo a escalabilidade e a performance desejadas.
+
+**Evolução futura:**
+Poderá evoluir para uma estratégia híbrida, combinando Output Cache para endpoints públicos e Redis distribuído para endpoints autenticados, ou integrar mecanismos reativos de invalidação baseados em eventos de domínio.
+
+---
+
+## 10. Estratégia de Testes
 **Decisão:** Adotar uma pirâmide de testes composta por:
 - Testes unitários (domínio);
 - Testes de integração (entre APIs e banco);
@@ -104,6 +123,8 @@ Demanda infraestrutura e conhecimento operacional de K8s, mas viabiliza escalabi
 
 **Motivação:**  
 Assegurar qualidade, confiabilidade e performance, com verificação contínua em diferentes níveis da aplicação.
+
+---
 
 📚 **Resumo:**  
 O **LedgerFlow** foi concebido para ser modular, escalável e resiliente. As decisões priorizam clareza, segurança e capacidade de evolução — com espaço aberto para incrementos em observabilidade, mensageria e processamento assíncrono conforme o sistema amadurece.
