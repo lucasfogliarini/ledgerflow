@@ -1,6 +1,6 @@
 ﻿# LedgerFlow
 
-LedgerFlow é uma solução desenvolvida em ASP.NET 9 para controle e consolidação de lançamentos financeiros diários (débitos e créditos). O projeto foi criado com foco em escalabilidade, resiliência e boas práticas de arquitetura de software — aplicando princípios de DDD, separação de contextos e testes automatizados.
+LedgerFlow é uma solução desenvolvida para controle e consolidação de lançamentos financeiros diários (débitos e créditos). O projeto foi criado com foco em escalabilidade, resiliência e boas práticas de arquitetura de software — aplicando princípios de DDD, separação de contextos e testes automatizados.
 
 A arquitetura contempla dois principais serviços:
 
