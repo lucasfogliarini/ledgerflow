@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;
-using OpenTelemetry.Logs;
 using System.Reflection;
 using System.Text.Json;
 
@@ -17,11 +16,13 @@ public static class DependencyInjection
         builder.Services.AddEndpoints();
         builder.AddHealthChecks();
         builder.Services.AddProblemDetails();
+        builder.AddCors();
         builder.Services.AddOpenApi();
         builder.AddJwtBearerAuthentication();
     }
     public static void UseWebApi(this WebApplication app)
     {
+        app.UseCors();
         app.UseAuthentication();
         app.UseAuthorization();
         app.MapEndpoints();
@@ -112,4 +113,25 @@ public static class DependencyInjection
         builder.Services.AddAuthorization();
     }
     public record JwtSettings(string Authority, string Audience);
+    private static void AddCors(this WebApplicationBuilder builder)
+    {
+        var corsSettings = builder.Configuration
+            .GetSection(nameof(CorsSettings))
+            .Get<CorsSettings>()
+            ?? throw new InvalidOperationException(
+                $"As configurações de CORS ({nameof(CorsSettings)}) não foram encontradas."
+            );
+
+        builder.Services.AddCors(options =>
+        {
+            options.AddDefaultPolicy(policy =>
+            {
+                policy.WithOrigins(corsSettings.AllowedOrigins)
+                      .AllowAnyHeader()
+                      .AllowAnyMethod()
+                      .AllowCredentials();
+            });
+        });
+    }
+    public record CorsSettings(string[] AllowedOrigins);
 }

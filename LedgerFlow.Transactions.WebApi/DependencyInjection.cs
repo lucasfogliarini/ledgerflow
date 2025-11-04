@@ -16,17 +16,17 @@ public static class DependencyInjection
         builder.Services.AddEndpoints();
         builder.AddHealthChecks();
         builder.Services.AddProblemDetails();
-        builder.AddOutputCache();
+        builder.AddCors();
         builder.Services.AddOpenApi();
         builder.AddJwtBearerAuthentication();
     }
     public static void UseWebApi(this WebApplication app)
     {
+        app.UseCors();
         app.UseAuthentication();
         app.UseAuthorization();
-        app.UseOutputCache();//precisa ser antes do MapEndpoints e depois da authenticação
         app.MapEndpoints();
-        app.MapHealthChecks();
+        app.MapHealthChecks();        
         if (app.Environment.IsDevelopment())
         {
             app.MapOpenApi();
@@ -89,21 +89,6 @@ public static class DependencyInjection
             }
         });
     }
-    private static void AddOutputCache(this WebApplicationBuilder builder)
-    {
-        builder.Services.AddOutputCache(options =>
-        {
-            options.AddPolicy("per-user", policy =>
-            {
-                policy.VaryByValue(context =>
-                {
-                    var username = context.User.FindFirst("preferred_username")?.Value ?? "anonymous";
-                    return new KeyValuePair<string, string>(nameof(username), username);
-                });
-                policy.Expire(TimeSpan.FromSeconds(30));
-            });
-        });
-    }
     private static void AddJwtBearerAuthentication(this WebApplicationBuilder builder)
     {
         var jwtSection = builder.Configuration.GetSection(nameof(JwtSettings));
@@ -128,4 +113,25 @@ public static class DependencyInjection
         builder.Services.AddAuthorization();
     }
     public record JwtSettings(string Authority, string Audience);
+    private static void AddCors(this WebApplicationBuilder builder)
+    {
+        var corsSettings = builder.Configuration
+            .GetSection(nameof(CorsSettings))
+            .Get<CorsSettings>()
+            ?? throw new InvalidOperationException(
+                $"As configurações de CORS ({nameof(CorsSettings)}) não foram encontradas."
+            );
+
+        builder.Services.AddCors(options =>
+        {
+            options.AddDefaultPolicy(policy =>
+            {
+                policy.WithOrigins(corsSettings.AllowedOrigins)
+                      .AllowAnyHeader()
+                      .AllowAnyMethod()
+                      .AllowCredentials();
+            });
+        });
+    }
+    public record CorsSettings(string[] AllowedOrigins);
 }
