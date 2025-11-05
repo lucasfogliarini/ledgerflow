@@ -4,7 +4,7 @@ Este documento registra as principais decisões arquiteturais tomadas durante o 
 
 ---
 
-## 1. Monolito Modular com múltiplos artefatos de implantação
+## ADR-01. Monolito Modular com múltiplos artefatos de implantação
 
 **Decisão:**
 Adotar um monolito modular com dois artefatos de implantação independentes — LedgerFlow.Transactions.WebApi e LedgerFlow.LedgerSummaries.WebApi — compartilhando a mesma base de código de aplicação e infraestrutura.
@@ -25,7 +25,7 @@ A modularização adiciona uma camada de complexidade, mas oferece benefícios c
 
 ---
 
-## 2. Comunicação entre Serviços: HTTP REST
+## ADR-02. Comunicação entre Serviços: HTTP REST
 **Decisão:** Utilizar comunicação síncrona via **HTTP REST**, com contratos bem definidos.
 
 **Motivação:**  
@@ -37,7 +37,7 @@ Poderá evoluir para uma abordagem assíncrona com mensageria (ex: Kafka ou Rabb
 
 ---
 
-## 3. Padrão de Domínio: DDD (Domain-Driven Design)
+## ADR-03. Padrão de Domínio: DDD (Domain-Driven Design)
 **Decisão:**  
 Estruturar o domínio com **Aggregates**, **Value Objects**, **Entities** e **Domain Events**.
 
@@ -48,7 +48,7 @@ O design do LedgerFlow já está preparado para emissão e manipulação de even
 
 ---
 
-## 4. Autenticação e Autorização: Keycloak (OAuth2 + JWT)
+## ADR-04. Autenticação e Autorização: Keycloak (OAuth2 + JWT)
 **Decisão:** Utilizar o **Keycloak** como Identity Provider, implementando o fluxo **Authorization Code** com emissão de **JWTs**.
 
 **Motivação:**  
@@ -59,7 +59,7 @@ Adiciona complexidade operacional (configuração e manutenção do realm), mas 
 
 ---
 
-## 5. Persistência: SQL Server
+## ADR-05. Persistência: SQL Server
 **Decisão:** Utilizar o **SQL Server** como banco relacional padrão para ambos os serviços.
 
 **Motivação:**  
@@ -70,7 +70,7 @@ Poderá ser substituído ou complementado por soluções orientadas a eventos ou
 
 ---
 
-## 6. Front-end: Next.js (LedgerFlow Web)
+## ADR-06. Front-end: Next.js (LedgerFlow Web)
 **Decisão:** Implementar uma interface moderna em **Next.js**, consumindo as APIs autenticadas.
 
 **Motivação:**  
@@ -81,7 +81,7 @@ Requer configuração cuidadosa de variáveis de ambiente e integração com o K
 
 ---
 
-## 7. Observabilidade: OpenTelemetry
+## ADR-07. Observabilidade: OpenTelemetry
 **Decisão:** Adotar **OpenTelemetry** para coleta de métricas, logs estruturados e traces distribuídos.
 
 **Motivação:**  
@@ -94,7 +94,7 @@ Integração com **Dynatrace** para visualização de métricas operacionais e S
 
 ---
 
-## 8. Deploy e Infraestrutura: Docker + Kubernetes
+## ADR-08. Deploy e Infraestrutura: Docker + Kubernetes
 **Decisão:** Containerizar os serviços e orquestrar via **Kubernetes (K8s)**.
 
 **Motivação:**  
@@ -105,7 +105,7 @@ Demanda infraestrutura e conhecimento operacional de K8s, mas viabiliza escalabi
 
 ---
 
-## 9. Caching: Redis para endpoints de alta demanda
+## ADR-09. Caching: Redis para endpoints de alta demanda
 
 **Decisão:** Implementar cache distribuído com Microsoft.Extensions.Caching.StackExchangeRedis.
 
@@ -124,7 +124,26 @@ Poderá evoluir para uma estratégia híbrida, combinando Output Cache para endp
 
 ---
 
-## 10. Estratégia de Testes
+## ADR-10. Rate Limiting por Usuário
+
+**Decisão**  
+Adotado o **Rate Limiting nativo do .NET 8** utilizando a política `"per-user"` com estratégia **Token Bucket**.
+A chave de limitação é derivada do **claim `sid`** do usuário autenticado ou, em caso de ausência, do **endereço IP**.
+A política define **100 tokens por usuário**, com **reabastecimento de 50 tokens a cada 30 segundos**.
+Quando o limite é atingido, a API retorna **HTTP 429 (Too Many Requests)** com a mensagem *"Limite atingido, tente novamente em breve."*
+
+**Benefícios:**
+
+* Protege o sistema contra picos de tráfego e abusos.
+* Mantém equidade entre usuários.
+* Reduz o risco de instabilidade em endpoints críticos.
+
+**Trade-offs:**
+
+* Usuários legítimos em alta frequência podem ser temporariamente bloqueados.
+* Exige calibração contínua dos parâmetros de limite conforme o uso real.
+
+## ADR-11. Estratégia de Testes
 **Decisão:** Adotar uma pirâmide de testes composta por:
 - Testes unitários (domínio);
 - Testes de integração (entre APIs e banco);

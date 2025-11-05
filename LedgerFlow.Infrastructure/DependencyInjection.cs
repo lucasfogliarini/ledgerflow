@@ -104,13 +104,6 @@ public static class DependencyInjection
                         TokensPerPeriod = 50,
                         ReplenishmentPeriod = TimeSpan.FromSeconds(30)
                     });
-                //return RateLimitPartition.GetFixedWindowLimiter(
-                //    partitionKey: key,
-                //    _ => new FixedWindowRateLimiterOptions
-                //    {
-                //        PermitLimit = 5,
-                //        Window = TimeSpan.FromMinutes(1)
-                //    });
             });
             options.OnRejected = async (context, token) =>
             {
