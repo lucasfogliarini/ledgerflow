@@ -66,11 +66,13 @@ O momento de definir essas funcionalidades é também um ponto crucial de alinha
 
 ## 🧱Arquitetura e Design
 
-A arquitetura do LedgerFlow foi concebida com base em princípios de DDD (Domain-Driven Design) e Clean Architecture, priorizando modularidade, separação de responsabilidades e evolução contínua.
-Trata-se de um monólito modular, em que cada módulo, como Transactions e LedgerSummaries é isolado logicamente, mas compartilha a mesma base de dados, permitindo simplicidade operacional e alta coesão interna.
-As decisões arquiteturais foram registradas formalmente em ADRs (Architectural Decision Records), documentando o racional técnico por trás das escolhas de design, incluindo estratégias de segurança, observabilidade e escalabilidade que pavimentam o caminho para uma futura migração a uma arquitetura distribuída.
+A arquitetura do **LedgerFlow** foi concebida com base em princípios de **Domain-Driven Design (DDD)** e **Clean Architecture**, priorizando modularidade, separação de responsabilidades e evolução incremental.
 
-Essas decisões podem ser consultadas em detalhes no arquivo:
+O sistema adota um **monólito modular com múltiplos artefatos de implantação**, onde cada módulo — como `Transactions` e `LedgerSummaries` — é isolado logicamente e organizado por domínio, mas compartilha uma base comum de aplicação, infraestrutura e dados. Essa abordagem garante **alta coesão interna**, **baixo acoplamento entre módulos** e **simplicidade operacional**, mantendo a capacidade de escalar e versionar APIs de forma independente quando necessário.
+
+Essa estrutura modular serve como base sólida para uma **migração gradual para uma arquitetura distribuída**, permitindo que o sistema evolua organicamente conforme a complexidade e o volume de operações aumentem.
+
+As principais **decisões arquiteturais** foram formalizadas em **ADRs (Architectural Decision Records)**, que registram o racional técnico de cada escolha. Essas decisões podem ser consultadas em detalhes no arquivo:
 
 📘 [ADRs.md](./docs/ADRs.md)
 
