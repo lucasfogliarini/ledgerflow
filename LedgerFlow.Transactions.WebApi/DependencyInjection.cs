@@ -1,5 +1,5 @@
 ﻿using LedgerFlow.Infrastructure;
-using LedgerFlow.LedgerSummaries.WebApi;
+using LedgerFlow.Transactions.WebApi;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.DependencyInjection.Extensions;

@@ -1,4 +1,4 @@
-﻿namespace LedgerFlow.LedgerSummaries.WebApi;
+﻿namespace LedgerFlow.Transactions.WebApi;
 
 public static class Routes
 {
