@@ -14,4 +14,4 @@ WORKDIR /app
 COPY --from=build /app/publish .
 
 EXPOSE 8080
-ENTRYPOINT ["dotnet", "LedgerFlow.Transactions.WebApi.dll"]
+ENTRYPOINT ["dotnet", "transactions-api.dll"]
