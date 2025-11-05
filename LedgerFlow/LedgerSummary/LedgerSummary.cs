@@ -30,6 +30,4 @@ public class LedgerSummary(DateTime referenceDate) : AggregateRoot, IAuditable
 
         return Result.Success();
     }
-
-    public override string ToString() => $"Consolidado para {CreatedAt:yyyy-MM-dd}: +{TotalCredits:C} -{TotalDebits:C} = {Balance:C}";
 }

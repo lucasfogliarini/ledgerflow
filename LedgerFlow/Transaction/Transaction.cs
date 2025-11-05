@@ -47,6 +47,4 @@ public class Transaction : Entity, IAuditable
             description: description
         );
     }
-
-    public override string ToString() =>  $"{Type} {Value:C} - {Description} ({CreatedAt:yyyy-MM-dd HH:mm})";
 }

@@ -67,24 +67,4 @@ public class TransactionUnitTests
         Assert.True(result.IsFailure);
         Assert.Contains("maior que zero", result.Error);
     }
-
-    [Theory(DisplayName = "ToString deve retornar string formatada corretamente")]
-    [InlineData(250.75, "Venda via PIX", TransactionType.Credit)]
-    [InlineData(99.90, "Compra de insumos", TransactionType.Debit)]
-    public void ToString_ShouldReturnFormattedString_WhenTransactionIsValid(decimal value, string description, TransactionType type)
-    {
-        // Arrange
-        var transaction = type == TransactionType.Credit
-            ? Transaction.CreateCredit(value, description).Value
-            : Transaction.CreateDebit(value, description).Value;
-
-        // Act
-        string result = transaction.ToString();
-
-        // Assert
-        Assert.Contains(type.ToString(), result);
-        Assert.Contains(description, result);
-        Assert.Contains(value.ToString("F2").Replace(".", ","), result);
-        Assert.Contains(DateTime.Now.Year.ToString(), result);
-    }
 }
