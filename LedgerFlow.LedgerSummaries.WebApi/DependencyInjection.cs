@@ -13,7 +13,7 @@ public static class DependencyInjection
 {
     public static void AddWebApi(this WebApplicationBuilder builder)
     {
-        builder.AddApplication();
+        builder.AddLedgerSummariesModule();
         builder.Services.AddEndpoints();
         builder.AddHealthChecks();
         builder.Services.AddProblemDetails();

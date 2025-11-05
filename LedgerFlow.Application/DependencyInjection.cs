@@ -1,5 +1,7 @@
 ﻿using LedgerFlow;
 using LedgerFlow.Application;
+using LedgerFlow.Application.LedgerSummaries;
+using LedgerFlow.Application.Transactions;
 using Microsoft.Extensions.Hosting;
 using System.Reflection;
 
@@ -13,7 +15,20 @@ public static class DependencyInjection
         builder.AddInfrastructure();
     }
 
-    private static IServiceCollection AddHandlers(this IServiceCollection services, Assembly assembly)
+    public static void AddLedgerSummariesModule(this IHostApplicationBuilder builder)
+    {
+        var ledgerSummariesModule = typeof(LedgerSummariesModule).Namespace;
+        builder.Services.AddHandlers(Assembly.GetExecutingAssembly(), ledgerSummariesModule);
+        builder.AddInfrastructure();
+    }
+    public static void AddTransactionsModule(this IHostApplicationBuilder builder)
+    {
+        var transactionsModule = typeof(TransactionsModule).Namespace;
+        builder.Services.AddHandlers(Assembly.GetExecutingAssembly(), transactionsModule);
+        builder.AddInfrastructure();
+    }
+
+    private static IServiceCollection AddHandlers(this IServiceCollection services, Assembly assembly, string? module = null)
     {
         var handlerInterfaces = new[]
         {
@@ -23,9 +38,11 @@ public static class DependencyInjection
             typeof(IDomainEventHandler<>)
         };
 
-        var types = assembly.GetTypes();
+        var handlerTypes = assembly.GetTypes();
+        if (!string.IsNullOrEmpty(module))
+            handlerTypes = handlerTypes.Where(t => t.Namespace == module).ToArray();
 
-        foreach (var type in types)
+        foreach (var type in handlerTypes)
         {
             if (type.IsAbstract || type.IsInterface)
                 continue;
