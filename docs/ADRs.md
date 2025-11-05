@@ -4,17 +4,24 @@ Este documento registra as principais decisões arquiteturais tomadas durante o 
 
 ---
 
-## 1. Monólito Modular como base para Arquitetura Distribuída
+## 1. Monolito Modular com múltiplos artefatos de implantação
 
-**Decisão:** Adotar dois serviços independentes — Transactions API e LedgerSummaries API — estruturados sobre um monólito modular.
+**Decisão:**
+Adotar um monolito modular com dois artefatos de implantação independentes — LedgerFlow.Transactions.WebApi e LedgerFlow.LedgerSummaries.WebApi — compartilhando a mesma base de código de aplicação e infraestrutura.
 
-**Motivação:**
-A segmentação em módulos de domínio separados permite evoluir a aplicação gradualmente em direção a uma arquitetura distribuída, sem abrir mão da simplicidade inicial de um monólito.
-Essa abordagem favorece o isolamento de responsabilidades, a resiliência entre componentes e o baixo acoplamento lógico, garantindo que o serviço de lançamentos (transactions) continue operante mesmo diante de falhas ou indisponibilidades na camada de consolidação (summaries).
-Além disso, o design modular facilita a futura extração de contextos para microsserviços caso o crescimento do sistema justifique maior independência de escala ou de deploy.
+**Motivação:**  
+A estrutura modular possibilita separar claramente os contextos de domínio (Transactions e LedgerSummaries), mantendo a coesão e a integridade transacional de um monolito.
+A existência de dois artefatos de implantação distintos permite independência operacional — cada API pode ser versionada, escalada e publicada separadamente — sem romper a unidade lógica da aplicação.
+Essa abordagem é especialmente útil para times que desejam preparar o sistema para uma futura transição gradual para microsserviços, preservando a simplicidade do desenvolvimento monolítico no estágio inicial.
 
-**Trade-offs:**
-A arquitetura modular adiciona certa complexidade operacional, especialmente na integração e comunicação entre APIs. Requer mecanismos robustos de observabilidade, rastreamento distribuído e monitoramento, mas oferece uma base sólida e preparada para migração incremental a um ambiente distribuído no futuro.
+Referência:  
+A abordagem de monolito modular é amplamente discutida como meio-termo entre monolito tradicional e microsserviços.
+Por exemplo, [Blank et al. (202x) argumentam](https://binaryigor.com/modular-monolith-and-microservices-modularity-is-what-truly-matters.html) que, embora a implantação seja comumente um único artefato, é viável construir múltiplas unidades de implantação mesmo dentro do monolito modular — “with one, two or three units of deployment”. 
+
+**Trade-offs:**  
+A manutenção de múltiplos pontos de deploy dentro de um mesmo monolito exige atenção redobrada à gestão de dependências internas e à compatibilidade entre módulos.
+Embora compartilhem o mesmo domínio e infraestrutura, é necessário garantir isolamento lógico entre camadas e observabilidade consistente para monitorar o comportamento dos módulos de forma independente.
+A modularização adiciona uma camada de complexidade, mas oferece benefícios claros em termos de evolução arquitetural e escalabilidade progressiva.
 
 ---
 
@@ -31,7 +38,8 @@ Poderá evoluir para uma abordagem assíncrona com mensageria (ex: Kafka ou Rabb
 ---
 
 ## 3. Padrão de Domínio: DDD (Domain-Driven Design)
-**Decisão:** Estruturar o domínio com **Aggregates**, **Value Objects**, **Entities** e **Domain Events**.
+**Decisão:**  
+Estruturar o domínio com **Aggregates**, **Value Objects**, **Entities** e **Domain Events**.
 
 **Motivação:**  
 Essa abordagem organiza a lógica de negócio de maneira expressiva, consistente e centrada no domínio, tornando o código mais próximo da linguagem utilizada pelos especialistas financeiros e facilitando sua manutenção e evolução ao longo do tempo.
