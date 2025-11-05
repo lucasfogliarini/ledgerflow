@@ -4,14 +4,17 @@ Este documento registra as principais decisões arquiteturais tomadas durante o 
 
 ---
 
-## 1. Padrão Arquitetural: Múltiplas WebAPIs sobre um monólito modular
-**Decisão:** Adotar dois serviços independentes – `Transactions API` e `LedgerSummaries API`.
+## 1. Monólito Modular como base para Arquitetura Distribuída
 
-**Motivação:**  
-A separação dos contextos permite maior isolamento de responsabilidades e garante resiliência. Assim, o serviço de lançamentos permanece disponível mesmo que o de consolidação esteja fora do ar.
+**Decisão:** Adotar dois serviços independentes — Transactions API e LedgerSummaries API — estruturados sobre um monólito modular.
 
-**Trade-offs:**  
-Aumenta a complexidade operacional e de integração, exigindo observabilidade, rastreamento distribuído e monitoramento entre serviços.
+**Motivação:**
+A segmentação em módulos de domínio separados permite evoluir a aplicação gradualmente em direção a uma arquitetura distribuída, sem abrir mão da simplicidade inicial de um monólito.
+Essa abordagem favorece o isolamento de responsabilidades, a resiliência entre componentes e o baixo acoplamento lógico, garantindo que o serviço de lançamentos (transactions) continue operante mesmo diante de falhas ou indisponibilidades na camada de consolidação (summaries).
+Além disso, o design modular facilita a futura extração de contextos para microsserviços caso o crescimento do sistema justifique maior independência de escala ou de deploy.
+
+**Trade-offs:**
+A arquitetura modular adiciona certa complexidade operacional, especialmente na integração e comunicação entre APIs. Requer mecanismos robustos de observabilidade, rastreamento distribuído e monitoramento, mas oferece uma base sólida e preparada para migração incremental a um ambiente distribuído no futuro.
 
 ---
 
@@ -31,10 +34,9 @@ Poderá evoluir para uma abordagem assíncrona com mensageria (ex: Kafka ou Rabb
 **Decisão:** Estruturar o domínio com **Aggregates**, **Value Objects**, **Entities** e **Domain Events**.
 
 **Motivação:**  
-Organizar a lógica de negócio de forma expressiva e sustentável, facilitando evolução do código e entendimento do domínio financeiro.
+Essa abordagem organiza a lógica de negócio de maneira expressiva, consistente e centrada no domínio, tornando o código mais próximo da linguagem utilizada pelos especialistas financeiros e facilitando sua manutenção e evolução ao longo do tempo.
 
-**Trade-offs:**  
-Requer um investimento inicial maior em modelagem e alinhamento com especialistas de domínio — mitigado por sessões de **EventStorming** para descoberta colaborativa dos eventos e comandos do sistema.
+O design do LedgerFlow já está preparado para emissão e manipulação de eventos de domínio, ainda que nenhum caso de uso concreto tenha sido implementado até o momento. Essa adaptação permite evoluir facilmente para um modelo mais reativo e orientado a eventos, promovendo integração entre partes da aplicação sem acoplamento direto.
 
 ---
 
