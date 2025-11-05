@@ -25,9 +25,10 @@ public static class DependencyInjection
     public static void UseWebApi(this WebApplication app)
     {
         app.UseCors();
+        app.UseRateLimiter();//para não autenticados
         app.UseAuthentication();
         app.UseAuthorization();
-        app.UseRateLimiter();
+        app.UseRateLimiter();//para autenticados
         app.MapEndpoints();
         app.MapHealthChecks();
         if (app.Environment.IsDevelopment())

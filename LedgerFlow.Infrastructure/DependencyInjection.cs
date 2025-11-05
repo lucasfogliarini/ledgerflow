@@ -95,9 +95,9 @@ public static class DependencyInjection
         {
             options.AddPolicy("per-user", context =>
             {
-                var userId = context.User.FindFirstValue("sid") ?? "anonymous";
+                var key = context.User.FindFirstValue("sid") ?? context.Connection.RemoteIpAddress?.ToString() ?? "anonymous";
                 return RateLimitPartition.GetTokenBucketLimiter(
-                    partitionKey: userId,
+                    partitionKey: key,
                     _ => new TokenBucketRateLimiterOptions
                     {
                         TokenLimit = 100,
@@ -105,7 +105,7 @@ public static class DependencyInjection
                         ReplenishmentPeriod = TimeSpan.FromSeconds(30)
                     });
                 //return RateLimitPartition.GetFixedWindowLimiter(
-                //    partitionKey: userId,
+                //    partitionKey: key,
                 //    _ => new FixedWindowRateLimiterOptions
                 //    {
                 //        PermitLimit = 5,
