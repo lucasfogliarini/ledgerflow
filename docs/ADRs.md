@@ -26,7 +26,8 @@ A modularização adiciona uma camada de complexidade, mas oferece benefícios c
 ---
 
 ## ADR-02. Comunicação entre Serviços: HTTP REST
-**Decisão:** Utilizar comunicação síncrona via **HTTP REST**, com contratos bem definidos.
+**Decisão:**  
+Utilizar comunicação síncrona via **HTTP REST**, com contratos bem definidos.
 
 **Motivação:**  
 Simplicidade e compatibilidade com ferramentas de mercado, facilitando testes e integração com o front-end.  
@@ -49,7 +50,8 @@ O design do LedgerFlow já está preparado para emissão e manipulação de even
 ---
 
 ## ADR-04. Autenticação e Autorização: Keycloak (OAuth2 + JWT)
-**Decisão:** Utilizar o **Keycloak** como Identity Provider, implementando o fluxo **Authorization Code** com emissão de **JWTs**.
+**Decisão:**  
+Utilizar o **Keycloak** como Identity Provider, implementando o fluxo **Authorization Code** com emissão de **JWTs**.
 
 **Motivação:**  
 Centralizar a autenticação, facilitar o controle de usuários e papéis, e garantir segurança via padrões amplamente adotados.
@@ -60,7 +62,8 @@ Adiciona complexidade operacional (configuração e manutenção do realm), mas 
 ---
 
 ## ADR-05. Persistência: SQL Server
-**Decisão:** Utilizar o **SQL Server** como banco relacional padrão para ambos os serviços.
+**Decisão:**  
+Utilizar o **SQL Server** como banco relacional padrão para ambos os serviços.
 
 **Motivação:**  
 Oferece consistência transacional, suporte nativo ao EF Core e boa compatibilidade com ambientes corporativos.
@@ -71,7 +74,8 @@ Poderá ser substituído ou complementado por soluções orientadas a eventos ou
 ---
 
 ## ADR-06. Front-end: Next.js (LedgerFlow Web)
-**Decisão:** Implementar uma interface moderna em **Next.js**, consumindo as APIs autenticadas.
+**Decisão:**  
+Implementar uma interface moderna em **Next.js**, consumindo as APIs autenticadas.
 
 **Motivação:**  
 Proporcionar uma experiência fluida e responsiva, com SSR (Server-Side Rendering) e integração nativa com APIs REST e OAuth2.
@@ -82,7 +86,8 @@ Requer configuração cuidadosa de variáveis de ambiente e integração com o K
 ---
 
 ## ADR-07. Observabilidade: OpenTelemetry
-**Decisão:** Adotar **OpenTelemetry** para coleta de métricas, logs estruturados e traces distribuídos.
+**Decisão:**  
+Adotar **OpenTelemetry** para coleta de métricas, logs estruturados e traces distribuídos.
 
 **Motivação:**  
 A observabilidade é essencial para monitorar a saúde e o desempenho dos serviços, além de fornecer rastreabilidade entre APIs e suporte à análise de falhas.
@@ -107,19 +112,20 @@ Demanda infraestrutura e conhecimento operacional de K8s, mas viabiliza escalabi
 
 ## ADR-09. Caching: Redis para endpoints de alta demanda
 
-**Decisão:** Implementar cache distribuído com Microsoft.Extensions.Caching.StackExchangeRedis.
+**Decisão:**  
+Implementar cache distribuído com Microsoft.Extensions.Caching.StackExchangeRedis.
 
-**Motivação:**
+**Motivação:**  
 Determinados endpoints do sistema, especialmente aqueles expostos a um alto volume de requisições (como consultas de consolidação), demandavam uma estratégia de cache eficiente para reduzir a carga no banco de dados e melhorar o tempo de resposta.
 
 Embora o Output Caching Middleware nativo do ASP.NET Core ofereça uma solução simples e performática, ele não suporta requisições que incluam o cabeçalho Authorization, o que inviabilizou seu uso em endpoints protegidos por autenticação JWT.
 
 Por isso, optou-se por uma implementação direta de cache distribuído utilizando o Redis por meio do pacote Microsoft.Extensions.Caching.StackExchangeRedis, que permite controle programático sobre o ciclo de vida dos dados armazenados e compatibilidade com APIs autenticadas.
 
-**Trade-offs:**
+**Trade-offs:**  
 A abordagem manual de caching aumenta a complexidade do código, exigindo políticas explícitas de invalidação e definição de chaves únicas por usuário ou contexto. Em contrapartida, garante maior flexibilidade e compatibilidade com cenários de autenticação, mantendo a escalabilidade e a performance desejadas.
 
-**Evolução futura:**
+**Evolução futura:**  
 Poderá evoluir para uma estratégia híbrida, combinando Output Cache para endpoints públicos e Redis distribuído para endpoints autenticados, ou integrar mecanismos reativos de invalidação baseados em eventos de domínio.
 
 ---
@@ -143,7 +149,30 @@ Quando o limite é atingido, a API retorna **HTTP 429 (Too Many Requests)** com 
 * Usuários legítimos em alta frequência podem ser temporariamente bloqueados.
 * Exige calibração contínua dos parâmetros de limite conforme o uso real.
 
-## ADR-11. Estratégia de Testes
+---
+
+## ADR-11. Adoção de Minimal APIs
+
+**Decisão:**  
+Adotar o modelo de **Minimal APIs** como base para a exposição dos endpoints HTTP das aplicações `LedgerFlow.Transactions.WebApi` e `LedgerFlow.LedgerSummaries.WebApi`.
+
+**Motivação:**  
+O uso de Minimal APIs simplifica a criação e manutenção dos endpoints, reduzindo o código cerimonial e facilitando a definição explícita das rotas e políticas de cada módulo.
+Essa abordagem é compatível com a arquitetura de monolito modular adotada no LedgerFlow, permitindo que cada artefato de implantação exponha apenas suas rotas e comportamentos específicos, sem dependência direta de controladores ou MVC.
+Além disso, as Minimal APIs favorecem **tempo de inicialização mais rápido**, **baixa sobrecarga de memória** e **menor complexidade** em comparação a aplicações baseadas em controllers, tornando-as ideais para contextos leves e de alto desempenho.
+
+**Referência:**
+A Microsoft recomenda o uso de Minimal APIs em aplicações modernas que exigem inicialização rápida, alta performance e simplicidade arquitetural.
+Mais detalhes em: [ASP.NET Core Minimal APIs Overview — Microsoft Docs](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis)
+
+**Trade-offs:**  
+A ausência de controladores tradicionais limita o uso de recursos avançados do MVC, como filtros globais e binding complexos, exigindo maior disciplina na padronização das rotas e middlewares.
+Além disso, a definição de endpoints diretamente no código demanda cuidado para preservar a legibilidade e manter a consistência entre módulos, especialmente em um monólito modular com múltiplos artefatos de implantação.
+Ainda assim, os ganhos em simplicidade, performance e clareza de responsabilidades compensam as limitações em projetos com arquitetura bem estruturada e modularizada.
+
+---
+
+## ADR-12. Estratégia de Testes
 **Decisão:** Adotar uma pirâmide de testes composta por:
 - Testes unitários (domínio);
 - Testes de integração (entre APIs e banco);
@@ -154,6 +183,3 @@ Quando o limite é atingido, a API retorna **HTTP 429 (Too Many Requests)** com 
 Assegurar qualidade, confiabilidade e performance, com verificação contínua em diferentes níveis da aplicação.
 
 ---
-
-📚 **Resumo:**  
-O **LedgerFlow** foi concebido para ser modular, escalável e resiliente. As decisões priorizam clareza, segurança e capacidade de evolução — com espaço aberto para incrementos em observabilidade, mensageria e processamento assíncrono conforme o sistema amadurece.
