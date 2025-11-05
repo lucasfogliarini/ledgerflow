@@ -27,6 +27,7 @@ public static class DependencyInjection
         app.UseCors();
         app.UseAuthentication();
         app.UseAuthorization();
+        app.UseRateLimiter();
         app.MapEndpoints();
         app.MapHealthChecks();
         if (app.Environment.IsDevelopment())
@@ -55,7 +56,9 @@ public static class DependencyInjection
 
         foreach (IEndpoint endpoint in endpoints)
         {
-            endpoint.MapEndpoint(app).RequireAuthorization();
+            endpoint.MapEndpoint(app)
+                .RequireAuthorization()
+                .RequireRateLimiting("per-user");
         }
 
         return app;
