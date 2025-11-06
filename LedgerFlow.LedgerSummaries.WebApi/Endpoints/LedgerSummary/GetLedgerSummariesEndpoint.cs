@@ -20,8 +20,7 @@ internal sealed class GetLedgerSummariesEndpoint : IEndpoint
         if (request is null)
             return Results.BadRequest("O corpo da requisição não pode ser nulo.");
 
-        var userId = httpContext.User.FindFirstValue("sid");
-        var cacheKey = $"ledger-summaries:{request.ReferenceDate:yyyy-MM-dd}-sid:{userId}";
+        var cacheKey = DistributedCache.GetLedgerSummariesKey(httpContext, request.ReferenceDate);
 
         var cached = await cache.GetStringAsync(cacheKey, cancellationToken);
         if (cached is not null)
