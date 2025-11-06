@@ -11,9 +11,10 @@ namespace Microsoft.Extensions.DependencyInjection;
 
 public static class DependencyInjection
 {
-    public static void AddWebApi(this WebApplicationBuilder builder)
+    public static void AddLedgerSummariesWebApi(this WebApplicationBuilder builder)
     {
-        builder.AddLedgerSummariesModule();
+        builder.Services.AddLedgerSummariesModule();
+        builder.AddInfrastructure();
         builder.Services.AddEndpoints();
         builder.AddHealthChecks();
         builder.Services.AddProblemDetails();
@@ -22,7 +23,7 @@ public static class DependencyInjection
         builder.AddJwtBearerAuthentication();
         builder.AddDistributedCache();
     }
-    public static void UseWebApi(this WebApplication app)
+    public static void UseLedgerSummariesWebApi(this WebApplication app)
     {
         app.UseCors();
         app.UseRateLimiter();//para não autenticados

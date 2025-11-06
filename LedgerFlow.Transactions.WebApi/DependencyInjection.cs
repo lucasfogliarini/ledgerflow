@@ -10,9 +10,10 @@ namespace Microsoft.Extensions.DependencyInjection;
 
 public static class DependencyInjection
 {
-    public static void AddWebApi(this WebApplicationBuilder builder)
+    public static void AddTransactionsWebApi(this WebApplicationBuilder builder)
     {
-        builder.AddTransactionsModule();
+        builder.Services.AddTransactionsModule();
+        builder.AddInfrastructure();
         builder.Services.AddEndpoints();
         builder.AddHealthChecks();
         builder.Services.AddProblemDetails();
@@ -20,7 +21,7 @@ public static class DependencyInjection
         builder.Services.AddOpenApi();
         builder.AddJwtBearerAuthentication();
     }
-    public static void UseWebApi(this WebApplication app)
+    public static void UseTransactionsWebApi(this WebApplication app)
     {
         app.UseCors();
         app.UseAuthentication();

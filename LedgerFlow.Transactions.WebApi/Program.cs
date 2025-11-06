@@ -1,9 +1,9 @@
 var builder = WebApplication.CreateBuilder(args);
 
-builder.AddWebApi();
+builder.AddTransactionsWebApi();
 
 var app = builder.Build();
 
-app.UseWebApi();
+app.UseTransactionsWebApi();
 
 app.Run();

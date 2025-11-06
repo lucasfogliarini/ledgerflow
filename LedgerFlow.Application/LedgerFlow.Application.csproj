@@ -12,7 +12,6 @@
 	</ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LedgerFlow.Infrastructure\LedgerFlow.Infrastructure.csproj" />
     <ProjectReference Include="..\LedgerFlow\LedgerFlow.csproj" />
   </ItemGroup>
 

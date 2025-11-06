@@ -2,30 +2,21 @@
 using LedgerFlow.Application;
 using LedgerFlow.Application.LedgerSummaries;
 using LedgerFlow.Application.Transactions;
-using Microsoft.Extensions.Hosting;
 using System.Reflection;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
 public static class DependencyInjection
 {
-    public static void AddApplication(this IHostApplicationBuilder builder)
-    {
-        builder.Services.AddHandlers(Assembly.GetExecutingAssembly());
-        builder.AddInfrastructure();
-    }
-
-    public static void AddLedgerSummariesModule(this IHostApplicationBuilder builder)
+    public static void AddLedgerSummariesModule(this IServiceCollection services)
     {
         var ledgerSummariesModule = typeof(LedgerSummariesModule).Namespace;
-        builder.Services.AddHandlers(Assembly.GetExecutingAssembly(), ledgerSummariesModule);
-        builder.AddInfrastructure();
+        services.AddHandlers(Assembly.GetExecutingAssembly(), ledgerSummariesModule);
     }
-    public static void AddTransactionsModule(this IHostApplicationBuilder builder)
+    public static void AddTransactionsModule(this IServiceCollection services)
     {
         var transactionsModule = typeof(TransactionsModule).Namespace;
-        builder.Services.AddHandlers(Assembly.GetExecutingAssembly(), transactionsModule);
-        builder.AddInfrastructure();
+        services.AddHandlers(Assembly.GetExecutingAssembly(), transactionsModule);
     }
 
     private static IServiceCollection AddHandlers(this IServiceCollection services, Assembly assembly, string? module = null)

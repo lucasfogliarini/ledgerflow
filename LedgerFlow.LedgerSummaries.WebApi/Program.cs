@@ -1,9 +1,9 @@
 var builder = WebApplication.CreateBuilder(args);
 
-builder.AddWebApi();
+builder.AddLedgerSummariesWebApi();
 
 var app = builder.Build();
 
-app.UseWebApi();
+app.UseLedgerSummariesWebApi();
 
 app.Run();
