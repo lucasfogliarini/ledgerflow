@@ -110,28 +110,43 @@ A solução foi desenhada seguindo princípios de **Domain-Driven Design (DDD)**
 
 ## 🧩Setup
 
-Abaixo estão as etapas para configurar o ambiente local.
-
-### 1. Subir a infraestrutura com Docker Compose
-
-Certifique-se de ter **Docker** e **Docker Compose** instalados.
-
-No diretório raiz do projeto, execute:
-
-```bash
-docker-compose up -d
-```
-**Esse comando inicializa todos os containers necessários:**
+Execute as duas etapas abaixo para configurar os seguintes serviços em ambiente local:
 
 | Serviço / Aplicação      | Porta Externa (host) | Observação                  |
 | ------------------------ | -------------------- | --------------------------- |
 | **Keycloak**             | **2000**             | Ambiente de identidade      |
 | **SQL Server**           | **2001**             | Banco de dados principal    |
 | **Transactions API**     | **2002**             | API de transações           |
-| **Ledger Summaries API** | **2003**             | API de sumários financeiros |
+| **Ledger Summaries API** | **2003**             | API de resumos financeiros |
 | **Redis**                | **2004**             | Cache e mensagens           |
 
-**E aplica as migrations na base ao inicializar a transaction-api.**
+### 1. Subir a infraestrutura
+
+Você pode subir a infraestrutura de duas formas: usando o Aspire .NET 10 ou Docker Compose.
+
+#### 1.1 Subir usando Aspire .NET 10
+
+Certifique-se de ter **Docker** e **.NET 10 SDK** instalados.
+
+**Entre na branch aspire**
+
+No diretório raiz do projeto, execute:
+```bash
+dotnet run --project LedgerFlow.AspireHost/LedgerFlow.AspireHost.csproj
+```
+
+#### 1.2 Subir usando ASP.NET 9 com Docker Compose
+
+Certifique-se de ter **Docker** e **Docker Compose** instalados.
+
+**Entre na branch master**
+
+No diretório raiz do projeto, execute:
+
+```bash
+docker-compose up -d
+```
+**Esse comando inicializa todos os containers necessários e aplica as migrations na base ao inicializar a transaction-api:**
 
 ⚠️ <small>Aviso: As credenciais e senhas presentes nos arquivos de configuração (appsettings.Development.json, docker-compose.yml, etc.) são utilizadas apenas para execução local e têm caráter estritamente práticos para o setup.
 Em um ambiente real, essas informações seriam protegidas por mecanismos seguros.</small>
