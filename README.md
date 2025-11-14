@@ -122,7 +122,7 @@ Execute as duas etapas abaixo para configurar os seguintes serviços em ambiente
 
 ### 1. Subir a infraestrutura
 
-Você pode subir a infraestrutura de duas formas: usando o Aspire .NET 10 ou Docker Compose.
+Você pode subir a infraestrutura de duas formas: usando o [Aspire .NET 10](https://aspire.dev) ou Docker Compose.
 
 #### 1.1 Subir usando Aspire .NET 10
 
@@ -134,6 +134,8 @@ No diretório raiz do projeto, execute:
 ```bash
 dotnet run --project LedgerFlow.AspireHost/LedgerFlow.AspireHost.csproj
 ```
+
+[Explore o dashboard](https://localhost:2005) para monitorar [recursos, logs, métricas e traces](https://aspire.dev/#opentelemetry-developer-dashboard)
 
 #### 1.2 Subir usando ASP.NET 9 com Docker Compose
 
