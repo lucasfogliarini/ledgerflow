@@ -1,3 +1,4 @@
+using Azure;
 using LedgerFlow.Application;
 using LedgerFlow.Application.LedgerSummaries;
 using Microsoft.AspNetCore.Mvc;
@@ -27,6 +28,7 @@ internal sealed class GetLedgerSummariesEndpoint : IEndpoint
         {
             logger.LogInformation("Cache hit para {CacheKey}", cacheKey);
             var cachedResponse = JsonSerializer.Deserialize<GetLedgerSummariesResponse>(cached);
+            httpContext.Response.Headers.Append("X-Cache", "HIT");
             return Results.Ok(cachedResponse);
         }
 
@@ -41,6 +43,7 @@ internal sealed class GetLedgerSummariesEndpoint : IEndpoint
             JsonSerializer.Serialize(result.Value),
             cancellationToken);
 
+        httpContext.Response.Headers.Append("X-Cache", "MISS");
         logger.LogInformation("Cache salvo para {CacheKey}", cacheKey);
 
         return Results.Ok(result.Value);

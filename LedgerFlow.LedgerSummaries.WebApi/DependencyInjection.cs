@@ -144,11 +144,9 @@ public static class DependencyInjection
     public record CorsSettings(string[] AllowedOrigins);
     public static void AddDistributedCache(this WebApplicationBuilder builder)
     {
-        var redisSettings = builder.Configuration
-            .GetSection(nameof(RedisSettings))
-            .Get<RedisSettings>();
+        var redisConnectionString = builder.Configuration.GetConnectionString("Redis");
 
-        if (redisSettings is null || string.IsNullOrWhiteSpace(redisSettings.Configuration) || !IsRedisAvailable(redisSettings.Configuration))
+        if (string.IsNullOrWhiteSpace(redisConnectionString) || !IsRedisAvailable(redisConnectionString))
         {
             builder.Services.AddDistributedMemoryCache();
             return;
@@ -156,10 +154,12 @@ public static class DependencyInjection
 
         builder.Services.AddStackExchangeRedisCache(options =>
         {
-            options.Configuration = redisSettings.Configuration;
-            options.InstanceName = redisSettings.InstanceName ?? "LedgerFlow:";
+            options.Configuration = redisConnectionString;
+            options.InstanceName = "LedgerFlow:";
         });
-        builder.Services.AddHealthChecks().AddRedis(redisSettings.Configuration, "redis-ledgerflow");
+
+        builder.Services.AddHealthChecks()
+            .AddRedis(redisConnectionString, "redis-ledgerflow");
     }
     private static bool IsRedisAvailable(string configuration)
     {
@@ -178,5 +178,4 @@ public static class DependencyInjection
             return false;
         }
     }
-    public record RedisSettings(string? Configuration, string? InstanceName = null);
 }
