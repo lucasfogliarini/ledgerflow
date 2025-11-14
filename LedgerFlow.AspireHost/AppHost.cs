@@ -1,18 +1,19 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
-var database = builder.AddSqlServer("sqlserver", port: 1433)
-    //.WithLifetime(ContainerLifetime.Persistent)
-    .WithDataVolume("aspire_sqlserver_data")
-    .AddDatabase("LedgerFlow");
-
-var redis = builder.AddRedis("redis")
-    .WithDataVolume("aspire_redis_data");
-
 var keycloak = builder.AddKeycloakContainer("keycloak", port: 2000)
     .WithDataVolume("aspire_keycloak_data")
     .WithEnvironment("KC_BOOTSTRAP_ADMIN_USERNAME", "admin")
     .WithEnvironment("KC_BOOTSTRAP_ADMIN_PASSWORD", "admin")
     .WithImport("import");
+
+var database = builder.AddSqlServer("sqlserver", port: 2001)
+    .WithLifetime(ContainerLifetime.Persistent)
+    .WithDataVolume("aspire_sqlserver_data")
+    .AddDatabase("LedgerFlow");
+
+var redis = builder.AddRedis("redis")
+    .WithRedisInsight()
+    .WithDataVolume("aspire_redis_data");
 
 var transactionApi = "transactions-api";
 builder.AddProject<Projects.LedgerFlow_Transactions_WebApi>(transactionApi)
