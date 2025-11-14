@@ -121,25 +121,22 @@ No diretório raiz do projeto, execute:
 ```bash
 docker-compose up -d
 ```
+**Esse comando inicializa todos os containers necessários:**
 
-Esse comando inicializa todos os containers necessários (banco de dados SQL Server, APIs, Keycloak, etc).
+| Serviço / Aplicação      | Porta Externa (host) | Observação                  |
+| ------------------------ | -------------------- | --------------------------- |
+| **Keycloak**             | **2000**             | Ambiente de identidade      |
+| **SQL Server**           | **2001**             | Banco de dados principal    |
+| **Transactions API**     | **2002**             | API de transações           |
+| **Ledger Summaries API** | **2003**             | API de sumários financeiros |
+| **Redis**                | **2004**             | Cache e mensagens           |
 
-### 2. Aplicar as migrações do banco de dados
-
-Após os containers estarem rodando, aplique as migrações executando o comando a seguir no terminal:
-
-Ainda no diretório raiz (LedgerFlow), execute:
-```
- dotnet tool install --global dotnet-ef
- dotnet ef database update --startup-project LedgerFlow.Transactions.WebApi/LedgerFlow.Transactions.WebApi.csproj
-```
-
-Isso criará o schema e as tabelas necessárias no banco de dados configurado via `appsettings.json`.  
+**E aplica as migrations na base ao inicializar a transaction-api.**
 
 ⚠️ <small>Aviso: As credenciais e senhas presentes nos arquivos de configuração (appsettings.Development.json, docker-compose.yml, etc.) são utilizadas apenas para execução local e têm caráter estritamente práticos para o setup.
 Em um ambiente real, essas informações seriam protegidas por mecanismos seguros.</small>
 
-### 3. Importar realm e clients do Keycloak
+### 2. Importar realm e clients do Keycloak
 
 O sistema utiliza o **Keycloak** como provedor de identidade.
 

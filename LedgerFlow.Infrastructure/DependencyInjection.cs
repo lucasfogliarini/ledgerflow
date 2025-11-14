@@ -24,6 +24,13 @@ public static class DependencyInjection
         builder.AddOpenTelemetryExporter();
         builder.AddRateLimiter();
     }
+    public static void Migrate(this WebApplication app)
+    {
+        using var scope = app.Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<LedgerFlowDbContext>();
+
+        db.Database.Migrate();
+    }
 
     public static void AddLedgerFlowDbContextCheck(this IServiceCollection services)
     {
