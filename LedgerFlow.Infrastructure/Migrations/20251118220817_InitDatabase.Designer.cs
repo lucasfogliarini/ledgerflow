@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LedgerFlow.Infrastructure.Migrations
 {
     [DbContext(typeof(LedgerFlowDbContext))]
-    [Migration("20251103181056_InitDatabase")]
+    [Migration("20251118220817_InitDatabase")]
     partial class InitDatabase
     {
         /// <inheritdoc />
@@ -67,7 +67,6 @@ namespace LedgerFlow.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Type")
