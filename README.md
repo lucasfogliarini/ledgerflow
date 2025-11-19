@@ -128,11 +128,11 @@ Você pode subir a infraestrutura de duas formas: usando o [Aspire .NET 10](http
 
 Certifique-se de ter **Docker** e **.NET 10 SDK** instalados.
 
-**Entre na branch aspire**
+**Entre na branch master**
 
 No diretório raiz do projeto, execute:
 ```bash
-dotnet run --project LedgerFlow.AspireHost/LedgerFlow.AspireHost.csproj
+dotnet run ledgerflow-aspire.cs
 ```
 
 [Explore o dashboard](https://localhost:2005) para monitorar [recursos, logs, métricas e traces](https://aspire.dev/#opentelemetry-developer-dashboard)
