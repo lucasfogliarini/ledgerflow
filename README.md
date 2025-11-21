@@ -110,22 +110,20 @@ A solução foi desenhada seguindo princípios de **Domain-Driven Design (DDD)**
 
 ## 🧩Setup
 
-Execute as duas etapas abaixo para configurar os seguintes serviços em ambiente local:
+Você pode subir a infraestrutura de duas formas: 
+1. Usando o [Aspire .NET 10](https://aspire.dev) 
+2. Usando o [Docker Compose](https://docs.docker.com/compose/)
 
 | Serviço / Aplicação      | Porta Externa (host) | Observação                  |
 | ------------------------ | -------------------- | --------------------------- |
 | **Keycloak**             | **2000**             | Ambiente de identidade      |
 | **SQL Server**           | **2001**             | Banco de dados principal    |
 | **Transactions API**     | **2002**             | API de transações           |
-| **Ledger Summaries API** | **2003**             | API de resumos financeiros  |
-| **Redis**                | **2004**             | Cache e mensagens           |
+| **Ledger Summaries API** | **2003**             | API de saldos consolidados  |
+| **Redis**                | **2004**             | Cache                       |
 | **LedgerFlow Web**       | **2005**             | Aplicação Web               |
 
-### 1. Subir a infraestrutura
-
-Você pode subir a infraestrutura de duas formas: usando o [Aspire .NET 10](https://aspire.dev) ou Docker Compose.
-
-#### 1.1 Subir usando Aspire .NET 10
+### 1. Subir infra usando Aspire .NET 10
 
 Certifique-se de ter **Docker** e **.NET 10 SDK** instalados.
 
@@ -136,9 +134,11 @@ No diretório raiz do projeto, execute:
 dotnet run ledgerflow-aspire.cs
 ```
 
-[Explore o dashboard](https://localhost:2005) para monitorar [recursos, logs, métricas e traces](https://aspire.dev/#opentelemetry-developer-dashboard)
+[Explore o dashboard](https://localhost:2006) para monitorar [recursos, logs, métricas e traces](https://aspire.dev/#opentelemetry-developer-dashboard)
 
-#### 1.2 Subir usando ASP.NET 9 com Docker Compose
+### 2. Subir infra usando ASP.NET 9 com Docker Compose
+
+#### 2.1 Subir infra com Docker Compose
 
 Certifique-se de ter **Docker** e **Docker Compose** instalados.
 
@@ -154,7 +154,7 @@ docker-compose up -d
 ⚠️ <small>Aviso: As credenciais e senhas presentes nos arquivos de configuração (appsettings.Development.json, docker-compose.yml, etc.) são utilizadas apenas para execução local e têm caráter estritamente práticos para o setup.
 Em um ambiente real, essas informações seriam protegidas por mecanismos seguros.</small>
 
-### 2. Importar realm e clients do Keycloak
+#### 2.2 Importar realm e clients do Keycloak
 
 O sistema utiliza o **Keycloak** como provedor de identidade.
 
