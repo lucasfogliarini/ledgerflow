@@ -4,15 +4,15 @@
       "clientId": "ledgerflow",
       "name": "Ledger Flow",
       "description": "",
-      "rootUrl": "http://localhost:2004",
-      "adminUrl": "http://localhost:2004",
-      "baseUrl": "http://localhost:2004",
+      "rootUrl": "http://localhost:2005",
+      "adminUrl": "http://localhost:2005",
+      "baseUrl": "http://localhost:2005",
       "surrogateAuthRequired": false,
       "enabled": true,
       "alwaysDisplayInConsole": true,
       "clientAuthenticatorType": "client-secret",
       "redirectUris": [
-        "http://localhost:2004/*",
+        "http://localhost:2005/*",
         "https://oauth.pstmn.io/v1/callback"
       ],
       "webOrigins": [

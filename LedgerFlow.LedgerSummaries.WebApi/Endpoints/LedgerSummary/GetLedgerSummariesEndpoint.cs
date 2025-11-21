@@ -53,5 +53,3 @@ internal sealed class GetLedgerSummariesEndpoint : IEndpoint
            .Produces(StatusCodes.Status400BadRequest);
     }
 }
-
-internal sealed record GetLedgerSummaryRequest(DateTime ReferenceDate);
