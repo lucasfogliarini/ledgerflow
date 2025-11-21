@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
-VisualStudioVersion = 18.0.11205.157 d18.0
+VisualStudioVersion = 18.0.11205.157
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LedgerFlow", "LedgerFlow\LedgerFlow.csproj", "{F7E8F2E7-8EE6-4752-A2AC-281791377EBE}"
 EndProject
@@ -28,6 +28,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LedgerFlow.Transactions.WebApi", "LedgerFlow.Transactions.WebApi\LedgerFlow.Transactions.WebApi.csproj", "{FDD2B92E-A953-FD75-1C6A-B554F557CDD5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LedgerFlow.LedgerSummaries.WebApi", "LedgerFlow.LedgerSummaries.WebApi\LedgerFlow.LedgerSummaries.WebApi.csproj", "{4788BC14-27D1-8855-9D58-0B23E2585584}"
+EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "ledgerflow.web", "ledgerflow.web\ledgerflow.web.esproj", "{0D6DADE7-1488-8E1F-CC31-463F803F3955}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,6 +61,12 @@ Global
 		{4788BC14-27D1-8855-9D58-0B23E2585584}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4788BC14-27D1-8855-9D58-0B23E2585584}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4788BC14-27D1-8855-9D58-0B23E2585584}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D6DADE7-1488-8E1F-CC31-463F803F3955}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D6DADE7-1488-8E1F-CC31-463F803F3955}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D6DADE7-1488-8E1F-CC31-463F803F3955}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{0D6DADE7-1488-8E1F-CC31-463F803F3955}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D6DADE7-1488-8E1F-CC31-463F803F3955}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D6DADE7-1488-8E1F-CC31-463F803F3955}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

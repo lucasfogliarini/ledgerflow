@@ -1,6 +1,7 @@
 #:sdk Aspire.AppHost.Sdk@13.0.0
 #:package Aspire.Hosting.SqlServer@13.0.0
 #:package Aspire.Hosting.Redis@13.0.0
+#:package Aspire.Hosting.NodeJs@9.5.2
 #:package Keycloak.AuthServices.Aspire.Hosting@0.2.0
 
 using Aspire.Hosting;
@@ -33,18 +34,30 @@ var redis = builder.AddRedis("redis")
 
 // Add Transactions API
 var transactionApi = "transactions-api";
-builder.AddProject(transactionApi, "LedgerFlow.Transactions.WebApi")
+var transactionsProject = builder.AddProject(transactionApi, "LedgerFlow.Transactions.WebApi")
     .WithReference(database).WaitFor(database)
     .WithReference(keycloak)
     .WithHttpEndpoint(name: transactionApi, port: 2002);
 
 // Add LedgerSummaries API
 var ledgersummariesApi = "ledgersummaries-api";
-builder.AddProject(ledgersummariesApi, "LedgerFlow.LedgerSummaries.WebApi")
+var ledgerSummariesProject = builder.AddProject(ledgersummariesApi, "LedgerFlow.LedgerSummaries.WebApi")
     .WithReference(database).WaitFor(database)
     .WithReference(redis)
     .WithReference(keycloak)
     .WithHttpEndpoint(name: ledgersummariesApi, port: 2003);
+
+var webApp = builder.AddExecutable(
+        "ledgerflow-web",
+        command: "npm",
+        args: ["run", "dev"],
+        workingDirectory: "LedgerFlow.Web")
+    .WithEnvironment("NEXT_PUBLIC_TRANSACTIONS_API_URL", "http://localhost:2002")
+    .WithEnvironment("NEXT_PUBLIC_LEDGERSUMMARIES_API_URL", "http://localhost:2003")
+    .WithEnvironment("NEXT_PUBLIC_KEYCLOAK_URL", "http://localhost:2000")
+    .WaitFor(transactionsProject)
+    .WaitFor(ledgerSummariesProject);
+
 
 var app = builder.Build();
 
