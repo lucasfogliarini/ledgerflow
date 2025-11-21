@@ -20,7 +20,7 @@ internal sealed class ConsolidateLedgerEndpoint : IEndpoint
             return Results.BadRequest(result.Error);
 
         var cacheKey = DistributedCache.GetLedgerSummariesKey(httpContext, request.ReferenceDate);
-        await cache.RemoveAsync(cacheKey);        
+        await cache.RemoveAsync(cacheKey, cancellationToken);        
         return Results.Ok(result.Value);
     }
 

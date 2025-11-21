@@ -9,8 +9,11 @@ internal class LedgerSummaryRepository(LedgerFlowDbContext dbContext) : Reposito
         dbContext.Add(ledgerSummary);
     }
 
-    public async Task<IEnumerable<LedgerSummary>> GetAsync(DateTime ReferenceDate, CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<LedgerSummary>> GetAsync(DateTime referenceDate, CancellationToken cancellationToken = default)
     {
-        return await Set<LedgerSummary>().Where(e=>e.ReferenceDate.Date ==  ReferenceDate.Date).ToListAsync(cancellationToken);
+        return await Set<LedgerSummary>()
+                    .Where(e=>e.ReferenceDate.Date ==  referenceDate.Date)
+                    .OrderByDescending(e=>e.ReferenceDate)
+                    .ToListAsync(cancellationToken);
     }
 }

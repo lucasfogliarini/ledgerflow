@@ -1,9 +1,7 @@
-using Azure;
 using LedgerFlow.Application;
 using LedgerFlow.Application.LedgerSummaries;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Distributed;
-using System.Security.Claims;
 using System.Text.Json;
 
 namespace LedgerFlow.LedgerSummaries.WebApi.Endpoints;
@@ -11,17 +9,15 @@ namespace LedgerFlow.LedgerSummaries.WebApi.Endpoints;
 internal sealed class GetLedgerSummariesEndpoint : IEndpoint
 {
     public async Task<IResult> GetLedgerSummariesAsync(
-        [FromBody] GetLedgerSummaryRequest request,
+        [FromQuery] DateTime referenceDate,
         IQueryHandler<GetLedgerSummariesQuery, GetLedgerSummariesResponse> handler,
         IDistributedCache cache,
         ILogger<GetLedgerSummariesEndpoint> logger,
         HttpContext httpContext,
         CancellationToken cancellationToken = default)
     {
-        if (request is null)
-            return Results.BadRequest("O corpo da requisição não pode ser nulo.");
 
-        var cacheKey = DistributedCache.GetLedgerSummariesKey(httpContext, request.ReferenceDate);
+        var cacheKey = DistributedCache.GetLedgerSummariesKey(httpContext, referenceDate);
 
         var cached = await cache.GetStringAsync(cacheKey, cancellationToken);
         if (cached is not null)
@@ -32,7 +28,7 @@ internal sealed class GetLedgerSummariesEndpoint : IEndpoint
             return Results.Ok(cachedResponse);
         }
 
-        var query = new GetLedgerSummariesQuery(request.ReferenceDate);
+        var query = new GetLedgerSummariesQuery(referenceDate);
         var result = await handler.HandleAsync(query, cancellationToken);
 
         if (result.IsFailure)
