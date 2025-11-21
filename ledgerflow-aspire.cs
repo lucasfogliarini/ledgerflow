@@ -16,6 +16,7 @@ builder.Configuration["Parameters:sqlserver-password"] = "Ledgerflow!123";
 
 // Add Keycloak for authentication
 var keycloak = builder.AddKeycloakContainer("keycloak", port: 2000)
+    .WithLifetime(ContainerLifetime.Persistent)
     .WithDataVolume("aspire_keycloak_data")
     .WithEnvironment("KC_BOOTSTRAP_ADMIN_USERNAME", "admin")
     .WithEnvironment("KC_BOOTSTRAP_ADMIN_PASSWORD", "admin")
@@ -36,28 +37,24 @@ var redis = builder.AddRedis("redis")
 var transactionApi = "transactions-api";
 var transactionsProject = builder.AddProject(transactionApi, "LedgerFlow.Transactions.WebApi")
     .WithReference(database).WaitFor(database)
-    .WithReference(keycloak)
+    .WithReference(keycloak).WaitFor(keycloak)
     .WithHttpEndpoint(name: transactionApi, port: 2002);
 
 // Add LedgerSummaries API
 var ledgersummariesApi = "ledgersummaries-api";
 var ledgerSummariesProject = builder.AddProject(ledgersummariesApi, "LedgerFlow.LedgerSummaries.WebApi")
     .WithReference(database).WaitFor(database)
+    .WithReference(keycloak).WaitFor(keycloak)
     .WithReference(redis)
-    .WithReference(keycloak)
     .WithHttpEndpoint(name: ledgersummariesApi, port: 2003);
 
-var webApp = builder.AddExecutable(
-        "ledgerflow-web",
-        command: "npm",
-        args: ["run", "dev"],
-        workingDirectory: "LedgerFlow.Web")
+var webApp = builder.AddNpmApp("ledgerflow-web", "LedgerFlow.Web", "dev")
     .WithEnvironment("NEXT_PUBLIC_TRANSACTIONS_API_URL", "http://localhost:2002")
     .WithEnvironment("NEXT_PUBLIC_LEDGERSUMMARIES_API_URL", "http://localhost:2003")
     .WithEnvironment("NEXT_PUBLIC_KEYCLOAK_URL", "http://localhost:2000")
     .WaitFor(transactionsProject)
-    .WaitFor(ledgerSummariesProject);
-
+    .WaitFor(ledgerSummariesProject)
+    .WithHttpEndpoint(name: "ledgerflow-web", port: 2005, isProxied: false);
 
 var app = builder.Build();
 

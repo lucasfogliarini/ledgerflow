@@ -117,8 +117,9 @@ Execute as duas etapas abaixo para configurar os seguintes serviços em ambiente
 | **Keycloak**             | **2000**             | Ambiente de identidade      |
 | **SQL Server**           | **2001**             | Banco de dados principal    |
 | **Transactions API**     | **2002**             | API de transações           |
-| **Ledger Summaries API** | **2003**             | API de resumos financeiros |
+| **Ledger Summaries API** | **2003**             | API de resumos financeiros  |
 | **Redis**                | **2004**             | Cache e mensagens           |
+| **LedgerFlow Web**       | **2005**             | Aplicação Web               |
 
 ### 1. Subir a infraestrutura
 
@@ -177,16 +178,25 @@ Para executá-los:
 dotnet test LedgerFlow.Tests.Unit
 ```
 
-### Testes Funcionais com Postman
+### Testes Funcionais 
+
+#### LedgerFlow Web
+
+A aplicação web LedgerFlow Web oferece uma interface amigável para interagir com as funcionalidades do sistema, permitindo a criação de transações e consulta de saldos consolidados.
+
+1. Acesse a aplicação web em [http://localhost:2005](http://localhost:2005)
+2. Faça login com o usuário **admin** e senha **admin** ou seu usuário Google.
+3. Explore as funcionalidades
+
+#### Postman
 As coleções do Postman permitem validar o comportamento funcional das APIs do LedgerFlow, simulando chamadas reais aos endpoints de transações e consolidados.
 1. Abra o Postman e clique em **Import**.  
-2. Selecione os arquivos das coleções:  
-   `transactions-api.postman_collection.json` e `ledgersummaries-api.postman_collection.json`.
+2. Selecione a coleção: `ledgerflow-api.postman_collection.json`
 3. Após a importação, abra qualquer requisição e vá até a aba **Authorization**.  
 4. Clique em **Get New Access Token** — as configurações de OAuth2 já estarão preenchidas.  
 5. Clique em **Use Token** para aplicá-lo automaticamente nas requisições.  
-6. Execute as chamadas das rotas para validar o comportamento das APIs.
-
+6. Entre na coleção e depois em Run Collection.
+7. Execute as requisições para validar os endpoints das APIs.
 
 ### Testes de Performance
 

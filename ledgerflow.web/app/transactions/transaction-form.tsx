@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { createCredit, createDebit, CreateTransactionRequest } from '../../lib/api'
+import { createCredit, createDebit, CreateTransactionRequest } from '../../lib/transactionsApi'
 import './transactions.css'
 
 export type TransactionType = 'credit' | 'debit'

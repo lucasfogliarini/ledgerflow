@@ -31,8 +31,7 @@ export const KeycloakProvider = ({ children }: { children: React.ReactNode }) =>
         const initKeycloak = async () => {
             try {
                 const auth = await keycloak.init({
-                    onLoad: 'check-sso',
-                    silentCheckSsoRedirectUri: window.location.origin + '/silent-check-sso.html',
+                    onLoad: 'login-required'
                 });
                 setAuthenticated(auth);
                 setLoading(false);

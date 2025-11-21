@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { LedgerSummary, getLedgerSummaries, consolidateLedger, formatCurrency, formatDate } from '../../lib/api'
+import { LedgerSummary, getLedgerSummaries, consolidateLedger, formatCurrency, formatDate } from '../../lib/ledgerSummariesApi'
 import '../transactions/transactions.css'
 
 export default function LedgerSummaryView() {
