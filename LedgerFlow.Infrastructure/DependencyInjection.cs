@@ -42,21 +42,23 @@ public static class DependencyInjection
         services.AddTransient<ITransactionRepository, TransactionRepository>();
         services.AddTransient<ILedgerSummaryRepository, LedgerSummaryRepository>();
     }
-    private static void AddDbContext(this IHostApplicationBuilder builder)
+    private static void AddDbContext(this IHostApplicationBuilder builder, string ledgerFlowConnectionStringKey = "LedgerFlow")
     {
-        var LedgerFlowConnectionStringKey = "LedgerFlow";
-        Console.WriteLine($"Trying to get a database connectionString '{LedgerFlowConnectionStringKey}' from Configuration.");
-        var LedgerFlowConnectionString = builder.Configuration.GetConnectionString(LedgerFlowConnectionStringKey);
-        if (LedgerFlowConnectionString == null)
+        var ledgerFlowConnectionString = builder.Configuration.GetConnectionString(ledgerFlowConnectionStringKey);
+
+        void BuilderOptions(DbContextOptionsBuilder options)
         {
-            Console.WriteLine("LedgerFlow ConnectionString NOT found, using InMemoryDatabase for LedgerFlowDbContext.");
-            builder.Services.AddDbContext<LedgerFlowDbContext>(options => options.UseInMemoryDatabase(nameof(LedgerFlowDbContext)));
+            if (ledgerFlowConnectionString is not null)
+                options.UseSqlServer(ledgerFlowConnectionString);
+            else
+                options.UseInMemoryDatabase(nameof(LedgerFlowDbContext));
+
+            // Use the following options only during development or troubleshooting
+            options.EnableSensitiveDataLogging();
+            options.EnableDetailedErrors();
         }
-        else
-        {
-            Console.WriteLine($"Using LedgerFlow ConnectionString for LedgerFlowDbContext.");
-            builder.Services.AddDbContext<LedgerFlowDbContext>(options => options.UseSqlServer(LedgerFlowConnectionString));
-        }
+
+        builder.Services.AddDbContext<LedgerFlowDbContext>(BuilderOptions);
     }
     private static void AddOpenTelemetryExporter(this IHostApplicationBuilder builder)
     {
