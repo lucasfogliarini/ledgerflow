@@ -47,7 +47,7 @@ jobs:
         file: ./LedgerFlow.Transactions.WebApi/Dockerfile
         push: true
         tags: |
-          lucasfogliarini/ledgerflow/transaction-api:latest
+          lucasfogliarini/transaction-api:latest
 
 
   ledgersummaries-api-push:
@@ -70,4 +70,4 @@ jobs:
         file: ./LedgerFlow.LedgerSummaries.WebApi/Dockerfile
         push: true
         tags: |
-          lucasfogliarini/ledgerflow/ledgersummaries-api:latest
+          lucasfogliarini/ledgersummaries-api:latest
