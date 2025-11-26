@@ -1,16 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: transaction-api
+  name: ledgersummaries-api
   namespace: ledgerflow
-  labels:
-    app.kubernetes.io/name: transaction-api
-    kubernetes.azure.com/generator: devhub
 spec:
-  type: LoadBalancer
   selector:
-    app.kubernetes.io/name: transaction-api
+    app: ledgersummaries-api
+  type: NodePort
   ports:
-    - protocol: TCP
-      port: 8080
+    - port: 2003
       targetPort: 8080
+      nodePort: 30003
