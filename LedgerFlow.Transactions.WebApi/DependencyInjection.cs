@@ -1,10 +1,7 @@
-﻿using LedgerFlow.Infrastructure;
-using LedgerFlow.Transactions.WebApi;
+﻿using LedgerFlow.Transactions.WebApi;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;
-using System.Text.Json;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -15,7 +12,6 @@ public static class DependencyInjection
         builder.Services.AddTransactionsModule();
         builder.AddInfrastructure();
         builder.Services.AddEndpoints();
-        builder.AddHealthChecks();
         builder.Services.AddProblemDetails();
         builder.AddCors();
         builder.Services.AddOpenApi();
@@ -61,38 +57,6 @@ public static class DependencyInjection
         }
 
         return app;
-    }
-    private static void AddHealthChecks(this WebApplicationBuilder builder)
-    {
-        builder.Services.AddLedgerFlowDbContextCheck();
-    }
-    private static void MapHealthChecks(this WebApplication app)
-    {
-        var serviceInfo = ServiceInfo.Get();
-        app.MapHealthChecks("/health", new HealthCheckOptions
-        {
-            Predicate = _ => true, 
-            ResponseWriter = async (context, report) =>
-            {
-                context.Response.ContentType = "application/json";
-
-                var result = JsonSerializer.Serialize(new
-                {
-                    serviceInfo.Name,
-                    serviceInfo.Version,
-                    app.Environment.EnvironmentName,
-                    status = report.Status.ToString(),
-                    checks = report.Entries.Select(entry => new
-                    {
-                        name = entry.Key,
-                        status = entry.Value.Status.ToString(),
-                        description = entry.Value.Description,
-                    })
-                });
-
-                await context.Response.WriteAsync(result);
-            }
-        });
     }
     private static void AddJwtBearerAuthentication(this WebApplicationBuilder builder)
     {

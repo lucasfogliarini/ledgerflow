@@ -2,9 +2,11 @@
 using LedgerFlow.Infrastructure;
 using LedgerFlow.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using OpenTelemetry.Logs;
@@ -12,6 +14,7 @@ using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using System.Security.Claims;
+using System.Text.Json;
 using System.Threading.RateLimiting;
 
 namespace Microsoft.Extensions.DependencyInjection;
@@ -23,6 +26,7 @@ public static class DependencyInjection
         builder.Services.AddRepositories();
         builder.AddOpenTelemetryExporter();
         builder.AddRateLimiter();
+        builder.AddLivenessHealthCheck();
     }
     public static void Migrate(this WebApplication app)
     {
@@ -31,11 +35,37 @@ public static class DependencyInjection
 
         db.Database.Migrate();
     }
-
-    public static void AddLedgerFlowDbContextCheck(this IServiceCollection services)
+    public static void MapHealthChecks(this WebApplication app)
     {
-        services.AddHealthChecks()
-                .AddCheck<DbContextHealthCheck<LedgerFlowDbContext>>(nameof(LedgerFlowDbContext));
+        var serviceInfo = ServiceInfo.Get();
+        app.MapHealthChecks("/health/live", new HealthCheckOptions
+        {
+            Predicate = healthCheck => healthCheck.Tags.Contains("live")
+        });
+        app.MapHealthChecks("/health/ready", new HealthCheckOptions
+        {
+            Predicate = _ => true,
+            ResponseWriter = async (context, report) =>
+            {
+                context.Response.ContentType = "application/json";
+
+                var result = JsonSerializer.Serialize(new
+                {
+                    serviceInfo.Name,
+                    serviceInfo.Version,
+                    app.Environment.EnvironmentName,
+                    status = report.Status.ToString(),
+                    checks = report.Entries.Select(entry => new
+                    {
+                        name = entry.Key,
+                        status = entry.Value.Status.ToString(),
+                        description = entry.Value.Description,
+                    })
+                });
+
+                await context.Response.WriteAsync(result);
+            }
+        });
     }
     private static void AddRepositories(this IServiceCollection services)
     {
@@ -59,6 +89,8 @@ public static class DependencyInjection
         }
 
         builder.Services.AddDbContext<LedgerFlowDbContext>(BuilderOptions);
+        builder.Services.AddHealthChecks()
+            .AddCheck<DbContextHealthCheck<LedgerFlowDbContext>>(nameof(LedgerFlowDbContext));
     }
     private static void AddOpenTelemetryExporter(this IHostApplicationBuilder builder)
     {
@@ -120,5 +152,10 @@ public static class DependencyInjection
                 await context.HttpContext.Response.WriteAsync("Limite atingido, tente novamente em breve.", token);
             };
         });
+    }
+    private static void AddLivenessHealthCheck(this IHostApplicationBuilder builder)
+    {
+        builder.Services.AddHealthChecks()
+            .AddCheck("self", () => HealthCheckResult.Healthy(), ["live"]);
     }
 }

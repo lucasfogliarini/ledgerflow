@@ -31,16 +31,17 @@ spec:
           envFrom:
             - secretRef:
                 name: ledgerflow-secrets
-          livenessProbe:
+          livenessProbe: # LivenessProbe verifica se o Pod está vivo e reinicia se necessário
             httpGet:
-              path: /health
+              path: /health/live
               port: 8080
-          readinessProbe:
+            failureThreshold: 1 # Reinicia o Pod imediatamente ao detectar falha
+          readinessProbe: # ReadinessProbe verifica se o Pod está pronto para receber tráfego.
             httpGet:
-              path: /health
+              path: /health/ready
               port: 8080
-            periodSeconds: 5
-            timeoutSeconds: 5
-            failureThreshold: 1
-            successThreshold: 1
-            initialDelaySeconds: 3
+            periodSeconds: 20 # Intervalo entre as verificações
+            timeoutSeconds: 5 # Tempo de espera para a resposta do probe
+            failureThreshold: 1 # Pod continua rodando, mas é removido dos endpoints do Service
+            successThreshold: 1 # Número de sucessos necessários para considerar o Pod pronto para tráfego novamente
+            initialDelaySeconds: 2 # Tempo de espera antes de iniciar as verificações
