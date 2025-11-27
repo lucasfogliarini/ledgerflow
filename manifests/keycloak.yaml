@@ -1,0 +1,60 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: keycloak-pvc
+  namespace: ledgerflow
+spec:
+  storageClassName: microk8s-hostpath
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keycloak
+  namespace: ledgerflow
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: keycloak
+  template:
+    metadata:
+      labels:
+        app: keycloak
+    spec:
+      containers:
+        - name: keycloak
+          image: quay.io/keycloak/keycloak:latest
+          args: ["start-dev"]
+          env:
+            - name: KC_BOOTSTRAP_ADMIN_USERNAME
+              value: "admin"
+            - name: KC_BOOTSTRAP_ADMIN_PASSWORD
+              value: "admin"
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - name: keycloak-storage
+              mountPath: /opt/keycloak/data
+      volumes:
+        - name: keycloak-storage
+          persistentVolumeClaim:
+            claimName: keycloak-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: keycloak
+  namespace: ledgerflow
+spec:
+  selector:
+    app: keycloak
+  type: NodePort
+  ports:
+    - port: 2000
+      targetPort: 8080
+      nodePort: 30000
