@@ -110,7 +110,7 @@ A solução foi desenhada seguindo princípios de **Domain-Driven Design (DDD)**
 
 ## 🧩Setup
 
-Você pode subir a infraestrutura de duas formas: 
+Você pode subir o sistema de duas formas: 
 1. Usando o [Aspire .NET 10](https://aspire.dev) 
 2. Usando o [Docker Compose](https://docs.docker.com/compose/)
 
@@ -123,11 +123,9 @@ Você pode subir a infraestrutura de duas formas:
 | **Redis**                | **2004**             | Cache                       |
 | **LedgerFlow Web**       | **2005**             | Aplicação Web               |
 
-### 1. Subir infra usando Aspire .NET 10
+### 1. Subir sistema usando Aspire .NET 10
 
 Certifique-se de ter **Docker** e **.NET 10 SDK** instalados.
-
-**Entre na branch master**
 
 No diretório raiz do projeto, execute:
 ```bash
@@ -136,13 +134,11 @@ dotnet run ledgerflow-aspire.cs
 
 [Explore o dashboard](https://localhost:2006) para monitorar [recursos, logs, métricas e traces](https://aspire.dev/#opentelemetry-developer-dashboard)
 
-### 2. Subir infra usando ASP.NET 9 com Docker Compose
+### 2. Subir sistema usando ASP.NET 9 com Docker Compose
 
-#### 2.1 Subir infra com Docker Compose
+#### 2.1 Subir sistema com Docker Compose
 
 Certifique-se de ter **Docker** e **Docker Compose** instalados.
-
-**Entre na branch master**
 
 No diretório raiz do projeto, execute:
 
