@@ -26,11 +26,20 @@ spec:
       labels:
         app: redis
     spec:
+      nodeSelector:
+        kubernetes.io/hostname: microk8s-vm # Garante que o Pod seja agendado no nó específico
       containers:
         - name: redis
           image: redis:7-alpine
           ports:
             - containerPort: 6379
+          resources:
+            requests:
+              cpu: "0.1"
+              memory: "0.3Gi"
+            limits:
+              cpu: "0.2"
+              memory: "0.6Gi"
           volumeMounts:
             - name: redis-storage
               mountPath: /opt/redis/data

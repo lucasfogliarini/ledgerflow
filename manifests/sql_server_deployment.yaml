@@ -25,11 +25,20 @@ spec:
       labels:
         app: sqlserver
     spec:
+      nodeSelector:
+        kubernetes.io/hostname: microk8s-vm # Garante que o Pod seja agendado no nó específico
       containers:
         - name: sqlserver
           image: mcr.microsoft.com/mssql/server:2022-latest
           ports:
             - containerPort: 1433
+          resources:
+            requests:
+              cpu: "0.5"
+              memory: "1Gi"
+            limits:
+              cpu: "1"
+              memory: "2Gi"
           env:
             - name: ACCEPT_EULA
               value: "Y"

@@ -14,18 +14,18 @@
 import http from 'k6/http';
 import { check, sleep } from 'k6';
 
-const transactionApi = "http://localhost:2002";
+const transactionApi = "http://172.18.216.140:30002";
 const debitEndpoint = `${transactionApi}/transactions/debit`;
 const creditEndpoint = `${transactionApi}/transactions/credit`;
 
-const ledgerSummariesApi = "http://localhost:2003";
+const ledgerSummariesApi = "http://172.18.216.140:30003";
 const consolidateLedgerSummaryEndpoint = `${ledgerSummariesApi}/ledger_summaries/consolidate`;
 const getLedgerSummaryEndpoint = `${ledgerSummariesApi}/ledger_summaries`;
 
-const token = "{token}";
+const token = "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJQcWZIaG9DNGVzMFZRdUptbXAwQUxJcW5qdUNQNkc0WmdtVVhHUFVpZzNnIn0.eyJleHAiOjE3NjQzNTkxNDYsImlhdCI6MTc2NDM1ODg0NiwiYXV0aF90aW1lIjoxNzY0MzU4ODQyLCJqdGkiOiJvbnJ0YWM6ZjU1MjIzYTMtMTdjNi0zMTBlLWQ0YTgtZTI4NTNjYjYyOGQ0IiwiaXNzIjoiaHR0cDovLzE3Mi4xOC4yMTYuMTQwOjMwMDAwL3JlYWxtcy9sZWRnZXJmbG93IiwiYXVkIjpbImxlZGdlcmZsb3ctYXBpIiwicmVhbG0tbWFuYWdlbWVudCJdLCJzdWIiOiI3ZjRmODFiOS0zYjUxLTQ4YjAtYTY4Ny02MzZmMWQxYWI5M2IiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJsZWRnZXJmbG93Iiwic2lkIjoiYmFlMDAxZjMtZTU1OC02NTc0LWViNzQtMGE4YmIzNzhlMTJlIiwiYWNyIjoiMSIsImFsbG93ZWQtb3JpZ2lucyI6WyIqIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJkZWZhdWx0LXJvbGVzLWxlZGdlcmZsb3ctcmVhbG0iXX0sInJlc291cmNlX2FjY2VzcyI6eyJyZWFsbS1tYW5hZ2VtZW50Ijp7InJvbGVzIjpbInZpZXctcmVhbG0iLCJ2aWV3LWlkZW50aXR5LXByb3ZpZGVycyIsIm1hbmFnZS1pZGVudGl0eS1wcm92aWRlcnMiLCJpbXBlcnNvbmF0aW9uIiwicmVhbG0tYWRtaW4iLCJjcmVhdGUtY2xpZW50IiwibWFuYWdlLXVzZXJzIiwicXVlcnktcmVhbG1zIiwidmlldy1hdXRob3JpemF0aW9uIiwicXVlcnktY2xpZW50cyIsInF1ZXJ5LXVzZXJzIiwibWFuYWdlLWV2ZW50cyIsIm1hbmFnZS1yZWFsbSIsInZpZXctZXZlbnRzIiwidmlldy11c2VycyIsInZpZXctY2xpZW50cyIsIm1hbmFnZS1hdXRob3JpemF0aW9uIiwibWFuYWdlLWNsaWVudHMiLCJxdWVyeS1ncm91cHMiXX19LCJzY29wZSI6Im9wZW5pZCBlbWFpbCBwcm9maWxlIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsIm5hbWUiOiJBZG1pbiBQYWRyw6NvIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiYWRtaW4iLCJnaXZlbl9uYW1lIjoiQWRtaW4iLCJmYW1pbHlfbmFtZSI6IlBhZHLDo28iLCJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIn0.sxYpZiBwTPbhnXA1ZvpiXILqQZl_9mMpn-72dBBfM71cEJTMIuG1bn2BK80VzUidNQE8Gr_s_KfiR9jRQMuK7O0ZzcHGZg9bgXgm2mLyBTnWn5gxRVKx8INuIat1czsoyQEZeqQVQSUgLjrpf3u3ClPVIO6ANWm0LBX2vLq-1osENcg2in-7lnpn4dGR8C86Y8mS1FSxmX12sZUSXt33-x6xxH4nxGXRwn8ragcjSL645No9zTQZ9zcPeJmuBAOmTwwr82gPBntrs86-m4tBqlcTS6TaVsXjqtw6Njsal5gqzJiOjn4BTv2KfZYNJiUeQ7SNEoaSz5pmQSeFTZHDcg";
 const request = {
     method: 'GET', // POST, GET, PUT, DELETE
-    url: getLedgerSummaryEndpoint,
+    url: getLedgerSummaryEndpoint + `?referenceDate=2025-11-28`,
     headers: {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
@@ -33,7 +33,7 @@ const request = {
         'User-Agent': 'k6',
     },
     body: JSON.stringify({
-        "referenceDate": new Date().toISOString().split('T')[0],
+        "referenceDate": '2025-11-28',
     }),
 };
 
