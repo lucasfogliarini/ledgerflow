@@ -25,7 +25,7 @@ public static class DependencyInjection
         app.UseRateLimiter();//para não autenticados
         app.UseAuthentication();
         app.UseAuthorization();
-        app.UseRateLimiter();//para autenticados
+        //app.UseRateLimiter();//para autenticados. Removido para fazer teste de carga.
         app.MapEndpoints();
         app.MapHealthChecks();
         if (app.Environment.IsDevelopment())
