@@ -25,7 +25,7 @@ public static class DependencyInjection
         builder.AddDbContext();        
         builder.Services.AddRepositories();
         builder.AddOpenTelemetryExporter();
-        //builder.AddRateLimiter(); removido para fazer teste de carga.
+        builder.AddRateLimiter();
         builder.AddLivenessHealthCheck();
     }
     public static void Migrate(this WebApplication app)
