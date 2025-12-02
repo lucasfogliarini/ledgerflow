@@ -214,7 +214,7 @@ k6 run k6.js
 Os testes de performance locais mostraram que o sistema manteve estabilidade e baixa latência mesmo sob carga constante. Ambos os endpoints responderam 100% das requisições com sucesso, apresentando boa vazão e tempos de resposta consistentes, adequados para uso em produção.
 
 <small>O endpoint de consulta de saldos consolidados com cache apresentou um desempenho excelente, com 5.999 requisições processadas com sucesso e tempo médio de resposta de apenas 3,78 ms, indicando alta eficiência em operações de consulta.</small>  
-<img src="docs/k6_ledger_summaries.png" alt="k6_ledger_summaries" width="500">
+<img src="docs/k6_ledger_summaries.png" alt="k6_ledger_summaries" width="500" />
 
 <small>O endpoint de criação de transações de crédito manteve estabilidade sob carga, processando 1.001 requisições com sucesso e tempo médio de resposta de 43,5 ms, com picos ocasionais esperados para operações de gravação.</small>  
-<img src="docs/k6_transactions_debit.png" alt="k6_transactions_debit" width="500">
+<img src="docs/k6_transactions_debit.png" alt="k6_transactions_debit" width="500" />
