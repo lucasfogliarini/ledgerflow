@@ -83,7 +83,7 @@ O diagrama abaixo apresenta a visão C4 de Nível 2 (App/Container) do sistema L
 
 As WebApis e o Keycloak estão preparadas para execução em Kubernetes (K8s), promovendo escalabilidade, isolamento de responsabilidades e resiliência.
 
-<img src="docs/ledgerflow-app-diagram.png" alt="LedgerFlow App Diagram" width="800">
+<img src="docs/ledgerflow-app-diagram.png" alt="LedgerFlow App Diagram" width="800" />
 
 
 🔗 [Explorar o diagrama no IcePanel](https://s.icepanel.io/5EJNqZk1BJKyQN/cv24)
