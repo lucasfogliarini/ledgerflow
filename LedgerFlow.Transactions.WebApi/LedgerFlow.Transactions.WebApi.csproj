@@ -14,8 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LedgerFlow.Application\LedgerFlow.Application.csproj" />
     <ProjectReference Include="..\LedgerFlow.Infrastructure\LedgerFlow.Infrastructure.csproj" />
+    <ProjectReference Include="..\LedgerFlow.Transactions.Application\LedgerFlow.Transactions.Application.csproj" />
   </ItemGroup>
 
 </Project>

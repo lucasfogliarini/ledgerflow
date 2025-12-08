@@ -105,7 +105,6 @@ public static class DependencyInjection
                     .AddHttpClientInstrumentation()
                     .AddAspNetCoreInstrumentation()
                     .AddOtlpExporter();
-                //.AddConsoleExporter();
             })
             .WithMetrics(meterBuilder =>
             {
@@ -114,13 +113,11 @@ public static class DependencyInjection
                     .AddHttpClientInstrumentation()
                     .AddAspNetCoreInstrumentation()
                     .AddOtlpExporter();
-                //.AddConsoleExporter();
             })
             .WithLogging(loggingBuilder =>
             {
                 loggingBuilder
                     .AddOtlpExporter();
-                //.AddConsoleExporter();
             });
 
         builder.Logging.AddOpenTelemetry(options =>

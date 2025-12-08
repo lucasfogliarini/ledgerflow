@@ -1,9 +1,9 @@
 ﻿using CSharpFunctionalExtensions;
 using Microsoft.Extensions.Logging;
 
-namespace LedgerFlow.Application.Transactions;
+namespace LedgerFlow.Transactions.Application;
 
-public class CreateDebitCommandHandler(ITransactionRepository transactionRepository, ILogger<CreateDebitCommandHandler> logger) : ICommandHandler<CreateDebitCommand, Transaction>
+public class CreateDebitCommandHandler(ITransactionRepository transactionRepository, ILogger<CreateDebitCommandHandler> logger)
 {
     public async Task<Result<Transaction>> HandleAsync(CreateDebitCommand command, CancellationToken cancellationToken = default)
     {
@@ -34,4 +34,4 @@ public class CreateDebitCommandHandler(ITransactionRepository transactionReposit
     }
 }
 
-public record CreateDebitCommand(decimal Value, string Description) : ICommand<Transaction>;
+public record CreateDebitCommand(decimal Value, string Description);

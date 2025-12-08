@@ -1,5 +1,7 @@
-using LedgerFlow.Application.Transactions;
-using LedgerFlow.Application;
+using CSharpFunctionalExtensions;
+using LedgerFlow.Transactions.Application;
+using Wolverine;
+using IResult = Microsoft.AspNetCore.Http.IResult;
 
 namespace LedgerFlow.Transactions.WebApi.Endpoints;
 
@@ -7,11 +9,11 @@ internal sealed class CreateCreditEndpoint : IEndpoint
 {
     public async Task<IResult> CreateCreditAsync(
         CreateCreditRequest request,
-        ICommandHandler<CreateCreditCommand, Transaction> handler,
+        IMessageBus bus,
         CancellationToken cancellationToken = default)
     {
         var command = new CreateCreditCommand(request.Value, request.Description);
-        var result = await handler.HandleAsync(command, cancellationToken);
+        var result = await bus.InvokeAsync<Result<Transaction>>(command, cancellationToken);
 
         if (result.IsFailure)
             return Results.BadRequest(result.Error);

@@ -1,8 +1,10 @@
-using LedgerFlow.Application;
-using LedgerFlow.Application.LedgerSummaries;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Distributed;
 using System.Text.Json;
+using CSharpFunctionalExtensions;
+using LedgerFlow.LedgerSummaries.Application;
+using Wolverine;
+using IResult = Microsoft.AspNetCore.Http.IResult;
 
 namespace LedgerFlow.LedgerSummaries.WebApi.Endpoints;
 
@@ -10,7 +12,7 @@ internal sealed class GetLedgerSummariesEndpoint : IEndpoint
 {
     public async Task<IResult> GetLedgerSummariesAsync(
         [FromQuery] DateTime referenceDate,
-        IQueryHandler<GetLedgerSummariesQuery, GetLedgerSummariesResponse> handler,
+        IMessageBus bus,
         IDistributedCache cache,
         ILogger<GetLedgerSummariesEndpoint> logger,
         HttpContext httpContext,
@@ -29,7 +31,7 @@ internal sealed class GetLedgerSummariesEndpoint : IEndpoint
         }
 
         var query = new GetLedgerSummariesQuery(referenceDate);
-        var result = await handler.HandleAsync(query, cancellationToken);
+        var result = await bus.InvokeAsync<Result<GetLedgerSummariesResponse>>(query, cancellationToken);
 
         if (result.IsFailure)
             return Results.BadRequest(result.Error);

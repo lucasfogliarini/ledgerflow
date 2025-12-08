@@ -1,9 +1,9 @@
 ﻿using CSharpFunctionalExtensions;
 using Microsoft.Extensions.Logging;
 
-namespace LedgerFlow.Application.LedgerSummaries;
+namespace LedgerFlow.LedgerSummaries.Application;
 
-public class ConsolidateLedgerCommandHandler(ILedgerSummaryRepository ledgerSummaryRepository, ITransactionRepository transactionRepository, ILogger<ConsolidateLedgerCommandHandler> logger) : ICommandHandler<ConsolidateLedgerCommand, LedgerSummaryResponse>
+public class ConsolidateLedgerCommandHandler(ILedgerSummaryRepository ledgerSummaryRepository, ITransactionRepository transactionRepository, ILogger<ConsolidateLedgerCommandHandler> logger)
 {
     public async Task<Result<LedgerSummaryResponse>> HandleAsync(ConsolidateLedgerCommand command, CancellationToken cancellationToken = default)
     {
@@ -27,4 +27,4 @@ public class ConsolidateLedgerCommandHandler(ILedgerSummaryRepository ledgerSumm
     }
 }
 
-public record ConsolidateLedgerCommand(DateTime ReferenceDate) : ICommand<LedgerSummaryResponse>;
+public record ConsolidateLedgerCommand(DateTime ReferenceDate);

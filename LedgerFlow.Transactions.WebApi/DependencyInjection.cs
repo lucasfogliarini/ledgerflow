@@ -9,7 +9,7 @@ public static class DependencyInjection
 {
     public static void AddTransactionsWebApi(this WebApplicationBuilder builder)
     {
-        builder.Services.AddTransactionsModule();
+        builder.AddTransactionsModule();
         builder.AddInfrastructure();
         builder.Services.AddEndpoints();
         builder.Services.AddProblemDetails();
