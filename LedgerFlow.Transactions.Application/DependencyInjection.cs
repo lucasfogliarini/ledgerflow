@@ -1,5 +1,8 @@
-﻿using Microsoft.Extensions.Hosting;
+﻿using LedgerFlow;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using Wolverine;
+using Wolverine.Kafka;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -14,7 +17,14 @@ public static class DependencyInjection
     {
         builder.UseWolverine(opts =>
         {
-            opts.Durability.Mode = DurabilityMode.MediatorOnly;
+            var connString = builder.Configuration.GetConnectionString("kafka");
+            opts.UseKafka(connString)
+                .ConfigureConsumers(consumer =>
+                {
+                    consumer.GroupId = "kafka-group";
+                });
+            opts.PublishMessage<TransactionCreated>()
+                .ToKafkaTopic("transaction-created");
         });
     }
 }

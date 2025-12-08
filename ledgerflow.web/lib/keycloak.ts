@@ -1,7 +1,7 @@
 import Keycloak from 'keycloak-js';
 
 const keycloakConfig = {
-    url: process.env.NEXT_PUBLIC_KEYCLOAK_URL || 'http://localhost:2000',
+    url: process.env.KEYCLOAK_URL || 'http://localhost:2000',
     realm: 'ledgerflow',
     clientId: 'ledgerflow',
 };

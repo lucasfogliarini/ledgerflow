@@ -1,6 +1,6 @@
 import keycloak from './keycloak'
 
-const TRANSACTIONS_API_URL = process.env.NEXT_PUBLIC_TRANSACTIONS_API_URL || 'http://localhost:2002'
+const TRANSACTIONS_API_URL = process.env.TRANSACTIONS_API_URL || 'http://localhost:3000'
 
 export interface Transaction {
     id: number

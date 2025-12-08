@@ -6,13 +6,3 @@
 /// Cor no EventStorming: <b>Laranja</b>.
 /// </summary>
 public interface IDomainEvent;
-
-public abstract class DomainEvent : IDomainEvent
-{
-    public DateTime OccurredOn { get; protected set; } = DateTime.Now;
-}
-
-public interface IDomainEventHandler<in TEvent> where TEvent : IDomainEvent
-{
-    Task HandleAsync(TEvent domainEvent, CancellationToken cancellationToken);
-}

@@ -33,7 +33,8 @@ public static class DependencyInjection
         using var scope = app.Services.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<LedgerFlowDbContext>();
 
-        db.Database.Migrate();
+        if(db.Database.IsRelational())
+            db.Database.Migrate();
     }
     public static void MapHealthChecks(this WebApplication app)
     {
@@ -88,6 +89,7 @@ public static class DependencyInjection
             options.EnableDetailedErrors();
         }
 
+        //builder.Services.AddDbContextWithWolverineIntegration<LedgerFlowDbContext>(BuilderOptions);
         builder.Services.AddDbContext<LedgerFlowDbContext>(BuilderOptions);
         builder.Services.AddHealthChecks()
             .AddCheck<DbContextHealthCheck<LedgerFlowDbContext>>(nameof(LedgerFlowDbContext));

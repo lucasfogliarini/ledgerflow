@@ -1,6 +1,6 @@
 import keycloak from './keycloak'
 
-const LEDGERSUMMARIES_API_URL = process.env.NEXT_PUBLIC_LEDGERSUMMARIES_API_URL || 'http://localhost:2003'
+const LEDGERSUMMARIES_API_URL = process.env.LEDGERSUMMARIES_API_URL || 'http://localhost:3001'
 
 export interface LedgerSummary {
     referenceDate: string

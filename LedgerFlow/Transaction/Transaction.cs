@@ -1,8 +1,9 @@
 ﻿using CSharpFunctionalExtensions;
+using System.Transactions;
 
 namespace LedgerFlow;
 
-public class Transaction : Entity, IAuditable
+public class Transaction : AggregateRoot, IAuditable
 {
     public Transaction() { }
     private Transaction(TransactionType type, decimal value, string description)
@@ -26,11 +27,7 @@ public class Transaction : Entity, IAuditable
         if (value <= 0)
             return Result.Failure<Transaction>("O valor do crédito deve ser maior que zero.");
 
-        return new Transaction(
-            type: TransactionType.Credit,
-            value: value,
-            description: description
-        );
+        return CreateTransaction(TransactionType.Credit, value, description);
     }
 
     /// <summary>
@@ -41,10 +38,17 @@ public class Transaction : Entity, IAuditable
         if (value <= 0)
             return Result.Failure<Transaction>("O valor do débito deve ser maior que zero.");
 
-        return new Transaction(
-            type: TransactionType.Debit,
+        return CreateTransaction(TransactionType.Debit, value, description);
+    }
+
+    private static Transaction CreateTransaction(TransactionType type, decimal value, string description)
+    {
+        var transaction = new Transaction(
+            type: type,
             value: value,
             description: description
         );
+        transaction.AddDomainEvent(new TransactionCreated(transaction.Type, transaction.Value, transaction.Description, transaction.CreatedAt));
+        return transaction;
     }
 }
