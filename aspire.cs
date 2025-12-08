@@ -24,10 +24,9 @@ var keycloak = builder.AddKeycloakContainer("keycloak", port: 2000)
     .WithImport("ledgerflow-realm-export.json");
 
 // Add SQL Server database
-var database = builder.AddSqlServer("sqlserver", port: 2001)
+var sqlServer = builder.AddSqlServer("sqlserver", port: 2001)
     .WithLifetime(ContainerLifetime.Persistent)
-    .WithDataVolume("aspire_sqlserver_data")
-    .AddDatabase("LedgerFlow");
+    .WithDataVolume("aspire_sqlserver_data");
 
 // Add Kafka message broker
 var kafka = builder.AddKafka("kafka", port: 2002)
@@ -42,15 +41,17 @@ var redis = builder.AddRedis("redis", port: 2003)
 
 // Add Transactions API
 var transactionApi = "transactions-api";
+var transactionsDatabase = sqlServer.AddDatabase("TransactionsDatabase");
 var transactionsProject = builder.AddProject(transactionApi, "LedgerFlow.Transactions.WebApi")
-    .WithReference(database).WaitFor(database)
+    .WithReference(transactionsDatabase).WaitFor(transactionsDatabase)
     .WithReference(keycloak).WaitFor(keycloak)
     .WithReference(kafka).WaitFor(kafka);
 
 // Add LedgerSummaries API
 var ledgersummariesApi = "ledgersummaries-api";
+var ledgerSummariesDatabase = sqlServer.AddDatabase("LedgerSummariesDatabase");
 var ledgerSummariesProject = builder.AddProject(ledgersummariesApi, "LedgerFlow.LedgerSummaries.WebApi")
-    .WithReference(database).WaitFor(database)
+    .WithReference(ledgerSummariesDatabase).WaitFor(ledgerSummariesDatabase)
     .WithReference(keycloak).WaitFor(keycloak)
     .WithReference(kafka).WaitFor(kafka)
     .WithReference(redis);

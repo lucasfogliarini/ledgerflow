@@ -21,6 +21,19 @@ public class TransactionCreatedHandler(ITransactionRepository transactionReposit
 
     public async Task HandleAsync(TransactionCreated transactionCreated, CancellationToken cancellationToken = default)
     {
+        var transaction = Transaction.CreateTransaction(
+                                transactionCreated.Type,
+                                transactionCreated.Value,
+                                transactionCreated.CreatedAt);
 
+        logger.LogInformation("Criando transação: {Id} | {Value:C} | {Description}",
+            transaction.Id,
+            transaction.Value,
+            transaction.Description);
+
+        transactionRepository.Add(transaction);
+        await transactionRepository.CommitScope.CommitAsync(cancellationToken);
+
+        logger.LogInformation("Transação de criada com sucesso: {TransactionId}", transaction.Id);
     }
 }

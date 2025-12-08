@@ -135,4 +135,12 @@ public static class DependencyInjection
         builder.Services.AddHealthChecks()
             .AddCheck("self", () => HealthCheckResult.Healthy(), ["live"]);
     }
+    internal static void Migrate<TDbContext>(this WebApplication app) where TDbContext : DbContext
+    {
+        using var scope = app.Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<TDbContext>();
+
+        if (db.Database.IsRelational())
+            db.Database.Migrate();
+    }
 }

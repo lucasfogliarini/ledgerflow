@@ -1,10 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.Reflection;
 using Wolverine;
 
 namespace LedgerFlow.Infrastructure;
 
-internal abstract class LedgerFlowDbContext(DbContextOptions options) : DbContext(options), ICommitScope
+internal abstract class LedgerFlowDbContext(IMessageBus bus, DbContextOptions options) : DbContext(options), ICommitScope
 {
     public async Task<int> CommitAsync(CancellationToken cancellationToken = default)
     {
@@ -25,10 +24,10 @@ internal abstract class LedgerFlowDbContext(DbContextOptions options) : DbContex
         var eventMessages = aggregates
             .SelectMany(e => e.DomainEvents);
 
-        //foreach (var eventMessage in eventMessages)
-        //{
-        //    await bus.PublishAsync(eventMessage);
-        //}
+        foreach (var eventMessage in eventMessages)
+        {
+            await bus.PublishAsync(eventMessage);
+        }
 
         foreach (var aggregate in aggregates)
             aggregate.ClearDomainEvents();

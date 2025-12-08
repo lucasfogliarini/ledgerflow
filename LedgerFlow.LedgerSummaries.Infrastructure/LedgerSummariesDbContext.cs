@@ -5,7 +5,7 @@ using Wolverine;
 
 namespace LedgerFlow.LedgerSummaries.Infrastructure;
 
-internal class LedgerSummariesDbContext(DbContextOptions options) : LedgerFlowDbContext(options)
+internal class LedgerSummariesDbContext(IMessageBus bus, DbContextOptions options) : LedgerFlowDbContext(bus, options)
 {
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

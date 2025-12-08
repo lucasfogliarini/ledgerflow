@@ -13,11 +13,18 @@ public class Transaction : AggregateRoot, IAuditable
         Description = description;
     }
 
-    public TransactionType Type { get; private set; }
-    public decimal Value { get; private set; }
-    public string? Description { get; private set; }
-    public DateTime CreatedAt { get; private set; } = DateTime.Now;
-    public DateTime? UpdatedAt { get; private set; } = DateTime.Now;    
+    private Transaction(TransactionType type, decimal value, DateTime createdAt)
+    {
+        Type = type;
+        Value = value;
+        CreatedAt = createdAt;
+    }
+
+    public TransactionType Type { get; }
+    public decimal Value { get; }
+    public string? Description { get; }
+    public DateTime CreatedAt { get; } = DateTime.Now;
+    public DateTime? UpdatedAt { get; } = DateTime.Now;    
 
     /// <summary>
     /// Cria uma transação de crédito.
@@ -41,6 +48,11 @@ public class Transaction : AggregateRoot, IAuditable
         return CreateTransaction(TransactionType.Debit, value, description);
     }
 
+    public static Transaction CreateTransaction(TransactionType type, decimal value, DateTime createdAt)
+    {
+        return new Transaction(type, value, createdAt);
+    }
+
     private static Transaction CreateTransaction(TransactionType type, decimal value, string description)
     {
         var transaction = new Transaction(
@@ -48,7 +60,7 @@ public class Transaction : AggregateRoot, IAuditable
             value: value,
             description: description
         );
-        transaction.AddDomainEvent(new TransactionCreated(transaction.Type, transaction.Value, transaction.Description, transaction.CreatedAt));
+        transaction.AddDomainEvent(new TransactionCreated(transaction.Type, transaction.Value, transaction.CreatedAt));
         return transaction;
     }
 }
