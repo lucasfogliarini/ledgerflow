@@ -1,6 +1,6 @@
-#:sdk Aspire.AppHost.Sdk@13.0.0
-#:package Aspire.Hosting.SqlServer@13.0.0
-#:package Aspire.Hosting.Redis@13.0.0
+#:sdk Aspire.AppHost.Sdk@13.0.2
+#:package Aspire.Hosting.SqlServer@13.0.2
+#:package Aspire.Hosting.Redis@13.0.2
 #:package Aspire.Hosting.NodeJs@9.5.2
 #:package Keycloak.AuthServices.Aspire.Hosting@0.2.0
 
