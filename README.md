@@ -118,10 +118,11 @@ Você pode subir o sistema de duas formas:
 | ------------------------ | -------------------- | --------------------------- |
 | **Keycloak**             | **2000**             | Ambiente de identidade      |
 | **SQL Server**           | **2001**             | Banco de dados principal    |
-| **Transactions API**     | **2002**             | API de transações           |
-| **Ledger Summaries API** | **2003**             | API de saldos consolidados  |
-| **Redis**                | **2004**             | Cache                       |
-| **LedgerFlow Web**       | **2005**             | Aplicação Web               |
+| **Kafka**                | **2002**             | Message Broker              |
+| **Redis**                | **2003**             | Cache                       |
+| **Transactions API**     | **3000**             | API de transações           |
+| **Ledger Summaries API** | **3001**             | API de saldos consolidados  |
+| **LedgerFlow Web**       | **4000**             | Aplicação Web               |
 
 ### 1. Subir sistema usando Aspire .NET 10
 
