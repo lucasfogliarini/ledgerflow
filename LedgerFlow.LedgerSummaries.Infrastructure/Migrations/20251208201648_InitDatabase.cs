@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace LedgerFlow.Infrastructure.Migrations
+namespace LedgerFlow.LedgerSummaries.Infrastructure.Migrations
 {
     /// <inheritdoc />
     public partial class InitDatabase : Migration

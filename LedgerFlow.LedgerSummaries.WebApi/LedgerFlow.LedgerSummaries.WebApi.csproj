@@ -13,11 +13,12 @@
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.0" />
 	<PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="10.0.0" />
 	<PackageReference Include="AspNetCore.HealthChecks.Redis" Version="9.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LedgerFlow.Infrastructure\LedgerFlow.Infrastructure.csproj" />
     <ProjectReference Include="..\LedgerFlow.LedgerSummaries.Application\LedgerFlow.LedgerSummaries.Application.csproj" />
+    <ProjectReference Include="..\LedgerFlow.LedgerSummaries.Infrastructure\LedgerFlow.LedgerSummaries.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

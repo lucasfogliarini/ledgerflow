@@ -9,10 +9,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace LedgerFlow.Infrastructure.Migrations
+namespace LedgerFlow.LedgerSummaries.Infrastructure.Migrations
 {
-    [DbContext(typeof(LedgerFlowDbContext))]
-    [Migration("20251118220817_InitDatabase")]
+    [DbContext(typeof(LedgerSummariesDbContext))]
+    [Migration("20251208201648_InitDatabase")]
     partial class InitDatabase
     {
         /// <inheritdoc />
@@ -20,7 +20,7 @@ namespace LedgerFlow.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.10")
+                .HasAnnotation("ProductVersion", "10.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);

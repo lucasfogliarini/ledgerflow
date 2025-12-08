@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using LedgerFlow.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 
-namespace LedgerFlow.Infrastructure.Repositories;
+namespace LedgerFlow.LedgerSummaries.Infrastructure.Repositories;
 
-internal class LedgerSummaryRepository(LedgerFlowDbContext dbContext) : Repository(dbContext), ILedgerSummaryRepository
+internal class LedgerSummaryRepository(LedgerSummariesDbContext dbContext) : Repository(dbContext), ILedgerSummaryRepository
 {
     public void Add(LedgerSummary ledgerSummary)
     {

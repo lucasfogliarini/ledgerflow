@@ -11,11 +11,12 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LedgerFlow.Infrastructure\LedgerFlow.Infrastructure.csproj" />
     <ProjectReference Include="..\LedgerFlow.Transactions.Application\LedgerFlow.Transactions.Application.csproj" />
+    <ProjectReference Include="..\LedgerFlow.Transactions.Infrastructure\LedgerFlow.Transactions.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

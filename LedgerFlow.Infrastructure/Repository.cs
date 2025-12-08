@@ -1,4 +1,4 @@
-﻿namespace LedgerFlow.Infrastructure.Repositories
+﻿namespace LedgerFlow.Infrastructure
 {
     internal abstract class Repository(LedgerFlowDbContext dbContext) : IRepository
     {

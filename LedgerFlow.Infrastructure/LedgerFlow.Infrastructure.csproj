@@ -14,7 +14,6 @@
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
 		<PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="10.0.0" />
-		<PackageReference Include="OpenTelemetry.Exporter.Console" Version="1.14.0" />
 
 		<PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.14.0" />
 		<PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.14.0" />
@@ -26,11 +25,16 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\LedgerFlow\LedgerFlow.csproj" />
+	  		<ProjectReference Include="..\LedgerFlow\LedgerFlow.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Migrations\" />
+		<InternalsVisibleTo Include="LedgerFlow.LedgerSummaries.Infrastructure" />
+		<InternalsVisibleTo Include="LedgerFlow.Transactions.Infrastructure" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Repositories\" />
 	</ItemGroup>
 
 </Project>

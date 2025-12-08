@@ -1,6 +1,4 @@
-﻿using LedgerFlow;
-using LedgerFlow.Infrastructure;
-using LedgerFlow.Infrastructure.Repositories;
+﻿using LedgerFlow.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Http;
@@ -18,24 +16,9 @@ using System.Text.Json;
 using System.Threading.RateLimiting;
 
 namespace Microsoft.Extensions.DependencyInjection;
+
 public static class DependencyInjection
 {
-    public static void AddInfrastructure(this IHostApplicationBuilder builder)
-    {
-        builder.AddDbContext();        
-        builder.Services.AddRepositories();
-        builder.AddOpenTelemetryExporter();
-        builder.AddRateLimiter();
-        builder.AddLivenessHealthCheck();
-    }
-    public static void Migrate(this WebApplication app)
-    {
-        using var scope = app.Services.CreateScope();
-        var db = scope.ServiceProvider.GetRequiredService<LedgerFlowDbContext>();
-
-        if(db.Database.IsRelational())
-            db.Database.Migrate();
-    }
     public static void MapHealthChecks(this WebApplication app)
     {
         var serviceInfo = ServiceInfo.Get();
@@ -68,12 +51,7 @@ public static class DependencyInjection
             }
         });
     }
-    private static void AddRepositories(this IServiceCollection services)
-    {
-        services.AddTransient<ITransactionRepository, TransactionRepository>();
-        services.AddTransient<ILedgerSummaryRepository, LedgerSummaryRepository>();
-    }
-    private static void AddDbContext(this IHostApplicationBuilder builder, string ledgerFlowConnectionStringKey = "LedgerFlow")
+    public static void AddDbContext<TDbContext>(this IHostApplicationBuilder builder, string ledgerFlowConnectionStringKey) where TDbContext: DbContext
     {
         var ledgerFlowConnectionString = builder.Configuration.GetConnectionString(ledgerFlowConnectionStringKey);
 
@@ -82,7 +60,7 @@ public static class DependencyInjection
             if (ledgerFlowConnectionString is not null)
                 options.UseSqlServer(ledgerFlowConnectionString);
             else
-                options.UseInMemoryDatabase(nameof(LedgerFlowDbContext));
+                options.UseInMemoryDatabase(nameof(TDbContext));
 
             // Use the following options only during development or troubleshooting
             options.EnableSensitiveDataLogging();
@@ -90,11 +68,11 @@ public static class DependencyInjection
         }
 
         //builder.Services.AddDbContextWithWolverineIntegration<LedgerFlowDbContext>(BuilderOptions);
-        builder.Services.AddDbContext<LedgerFlowDbContext>(BuilderOptions);
+        builder.Services.AddDbContext<TDbContext>(BuilderOptions);
         builder.Services.AddHealthChecks()
-            .AddCheck<DbContextHealthCheck<LedgerFlowDbContext>>(nameof(LedgerFlowDbContext));
+            .AddCheck<DbContextHealthCheck<TDbContext>>(nameof(TDbContext));
     }
-    private static void AddOpenTelemetryExporter(this IHostApplicationBuilder builder)
+    public static void AddOpenTelemetryExporter(this IHostApplicationBuilder builder)
     {
         var serviceInfo = ServiceInfo.Get();
 
@@ -129,7 +107,7 @@ public static class DependencyInjection
             options.ParseStateValues = true;
         });
     }
-    private static void AddRateLimiter(this IHostApplicationBuilder builder)
+    public static void AddRateLimiter(this IHostApplicationBuilder builder)
     {
         builder.Services.AddRateLimiter(options =>
         {
@@ -152,7 +130,7 @@ public static class DependencyInjection
             };
         });
     }
-    private static void AddLivenessHealthCheck(this IHostApplicationBuilder builder)
+    public static void AddLivenessHealthCheck(this IHostApplicationBuilder builder)
     {
         builder.Services.AddHealthChecks()
             .AddCheck("self", () => HealthCheckResult.Healthy(), ["live"]);

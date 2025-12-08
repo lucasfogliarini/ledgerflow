@@ -8,16 +8,16 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace LedgerFlow.Infrastructure.Migrations
+namespace LedgerFlow.LedgerSummaries.Infrastructure.Migrations
 {
-    [DbContext(typeof(LedgerFlowDbContext))]
-    partial class LedgerFlowDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(LedgerSummariesDbContext))]
+    partial class LedgerSummariesDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.10")
+                .HasAnnotation("ProductVersion", "10.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);

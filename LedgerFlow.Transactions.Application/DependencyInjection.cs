@@ -18,11 +18,8 @@ public static class DependencyInjection
         builder.UseWolverine(opts =>
         {
             var connString = builder.Configuration.GetConnectionString("kafka");
-            opts.UseKafka(connString)
-                .ConfigureConsumers(consumer =>
-                {
-                    consumer.GroupId = "kafka-group";
-                });
+            opts.UseKafka(connString);
+
             opts.PublishMessage<TransactionCreated>()
                 .ToKafkaTopic("transaction-created");
         });

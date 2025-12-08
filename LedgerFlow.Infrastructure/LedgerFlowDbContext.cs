@@ -4,14 +4,8 @@ using Wolverine;
 
 namespace LedgerFlow.Infrastructure;
 
-internal class LedgerFlowDbContext(IMessageBus bus, DbContextOptions options) : DbContext(options), ICommitScope
+internal abstract class LedgerFlowDbContext(DbContextOptions options) : DbContext(options), ICommitScope
 {
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        var thisAssembly = Assembly.GetExecutingAssembly();
-        modelBuilder.ApplyConfigurationsFromAssembly(thisAssembly);
-    }
-
     public async Task<int> CommitAsync(CancellationToken cancellationToken = default)
     {
         var result = await base.SaveChangesAsync(cancellationToken);
@@ -31,10 +25,10 @@ internal class LedgerFlowDbContext(IMessageBus bus, DbContextOptions options) : 
         var eventMessages = aggregates
             .SelectMany(e => e.DomainEvents);
 
-        foreach (var eventMessage in eventMessages)
-        {
-            await bus.PublishAsync(eventMessage);
-        }
+        //foreach (var eventMessage in eventMessages)
+        //{
+        //    await bus.PublishAsync(eventMessage);
+        //}
 
         foreach (var aggregate in aggregates)
             aggregate.ClearDomainEvents();
