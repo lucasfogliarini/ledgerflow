@@ -32,9 +32,4 @@
 		<InternalsVisibleTo Include="LedgerFlow.LedgerSummaries.Infrastructure" />
 		<InternalsVisibleTo Include="LedgerFlow.Transactions.Infrastructure" />
 	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Repositories\" />
-	</ItemGroup>
-
 </Project>
