@@ -51,14 +51,14 @@ public static class DependencyInjection
             }
         });
     }
-    public static void AddDbContext<TDbContext>(this IHostApplicationBuilder builder, string ledgerFlowConnectionStringKey) where TDbContext: DbContext
+    public static void AddDbContext<TDbContext>(this IHostApplicationBuilder builder, string connectionStringKey) where TDbContext: DbContext
     {
-        var ledgerFlowConnectionString = builder.Configuration.GetConnectionString(ledgerFlowConnectionStringKey);
+        var connectionString = builder.Configuration.GetConnectionString(connectionStringKey);
 
         void BuilderOptions(DbContextOptionsBuilder options)
         {
-            if (ledgerFlowConnectionString is not null)
-                options.UseSqlServer(ledgerFlowConnectionString);
+            if (connectionString is not null)
+                options.UseSqlServer(connectionString);
             else
                 options.UseInMemoryDatabase(nameof(TDbContext));
 
@@ -67,7 +67,6 @@ public static class DependencyInjection
             options.EnableDetailedErrors();
         }
 
-        //builder.Services.AddDbContextWithWolverineIntegration<LedgerFlowDbContext>(BuilderOptions);
         builder.Services.AddDbContext<TDbContext>(BuilderOptions);
         builder.Services.AddHealthChecks()
             .AddCheck<DbContextHealthCheck<TDbContext>>(nameof(TDbContext));
