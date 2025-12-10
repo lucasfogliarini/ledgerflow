@@ -14,6 +14,7 @@ using OpenTelemetry.Trace;
 using System.Security.Claims;
 using System.Text.Json;
 using System.Threading.RateLimiting;
+using Wolverine.EntityFrameworkCore;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -67,7 +68,8 @@ public static class DependencyInjection
             options.EnableDetailedErrors();
         }
 
-        builder.Services.AddDbContext<TDbContext>(BuilderOptions);
+        builder.Services.AddDbContextWithWolverineIntegration<TDbContext>(BuilderOptions);
+        //builder.Services.AddDbContext<TDbContext>(BuilderOptions);
         builder.Services.AddHealthChecks()
             .AddCheck<DbContextHealthCheck<TDbContext>>(nameof(TDbContext));
     }

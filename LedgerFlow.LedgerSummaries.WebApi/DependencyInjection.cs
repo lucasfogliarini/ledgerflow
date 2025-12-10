@@ -1,4 +1,5 @@
-﻿using LedgerFlow.LedgerSummaries.WebApi;
+﻿using LedgerFlow.LedgerSummaries.Application;
+using LedgerFlow.LedgerSummaries.WebApi;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;
@@ -10,7 +11,7 @@ public static class DependencyInjection
 {
     public static void AddLedgerSummariesWebApi(this WebApplicationBuilder builder)
     {
-        builder.AddLedgerSummariesModule();
+        builder.UseWolverineFx(typeof(TransactionCreatedHandler).Assembly);
         builder.AddInfrastructure();
         builder.Services.AddEndpoints();
         builder.Services.AddProblemDetails();

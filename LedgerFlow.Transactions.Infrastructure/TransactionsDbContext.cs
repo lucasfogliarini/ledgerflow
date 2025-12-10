@@ -1,11 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using LedgerFlow.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 using System.Reflection;
-using LedgerFlow.Infrastructure;
-using Wolverine;
 
 namespace LedgerFlow.Transactions.Infrastructure;
 
-internal class TransactionsDbContext(IMessageBus bus, DbContextOptions options) : LedgerFlowDbContext(bus, options)
+internal class TransactionsDbContext(DbContextOptions options) : LedgerFlowDbContext(options)
 {
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -3,13 +3,13 @@ using Wolverine;
 
 namespace LedgerFlow.Infrastructure;
 
-internal abstract class LedgerFlowDbContext(IMessageBus bus, DbContextOptions options) : DbContext(options), ICommitScope
+internal abstract class LedgerFlowDbContext(DbContextOptions options) : DbContext(options), ICommitScope
 {
     public async Task<int> CommitAsync(CancellationToken cancellationToken = default)
     {
         var result = await base.SaveChangesAsync(cancellationToken);
 
-        await PublishDomainEvents();
+        //await PublishDomainEvents();
 
         return result;
     }
@@ -26,7 +26,7 @@ internal abstract class LedgerFlowDbContext(IMessageBus bus, DbContextOptions op
 
         foreach (var eventMessage in eventMessages)
         {
-            await bus.PublishAsync(eventMessage);
+            //await bus.PublishAsync(eventMessage);
         }
 
         foreach (var aggregate in aggregates)

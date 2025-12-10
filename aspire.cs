@@ -27,6 +27,7 @@ var keycloak = builder.AddKeycloakContainer("keycloak", port: 2000)
 var sqlServer = builder.AddSqlServer("sqlserver", port: 2001)
     .WithLifetime(ContainerLifetime.Persistent)
     .WithDataVolume("aspire_sqlserver_data");
+var wolverineDatabase = sqlServer.AddDatabase("WolverineDatabase");
 
 // Add Kafka message broker
 var kafka = builder.AddKafka("kafka", port: 2002)
@@ -43,6 +44,7 @@ var redis = builder.AddRedis("redis", port: 2003)
 var transactionApi = "transactions-api";
 var transactionsDatabase = sqlServer.AddDatabase("TransactionsDatabase");
 var transactionsProject = builder.AddProject(transactionApi, "LedgerFlow.Transactions.WebApi")
+    .WithReference(wolverineDatabase).WaitFor(wolverineDatabase)
     .WithReference(transactionsDatabase).WaitFor(transactionsDatabase)
     .WithReference(keycloak).WaitFor(keycloak)
     .WithReference(kafka).WaitFor(kafka);
@@ -51,6 +53,7 @@ var transactionsProject = builder.AddProject(transactionApi, "LedgerFlow.Transac
 var ledgersummariesApi = "ledgersummaries-api";
 var ledgerSummariesDatabase = sqlServer.AddDatabase("LedgerSummariesDatabase");
 var ledgerSummariesProject = builder.AddProject(ledgersummariesApi, "LedgerFlow.LedgerSummaries.WebApi")
+    .WithReference(wolverineDatabase).WaitFor(wolverineDatabase)
     .WithReference(ledgerSummariesDatabase).WaitFor(ledgerSummariesDatabase)
     .WithReference(keycloak).WaitFor(keycloak)
     .WithReference(kafka).WaitFor(kafka)
