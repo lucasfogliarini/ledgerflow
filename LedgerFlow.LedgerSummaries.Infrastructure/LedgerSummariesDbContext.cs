@@ -4,7 +4,7 @@ using LedgerFlow.Infrastructure;
 
 namespace LedgerFlow.LedgerSummaries.Infrastructure;
 
-internal class LedgerSummariesDbContext(DbContextOptions options) : LedgerFlowDbContext(options)
+public class LedgerSummariesDbContext(DbContextOptions options) : LedgerFlowDbContext(options)
 {
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

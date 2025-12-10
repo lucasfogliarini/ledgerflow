@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace LedgerFlow.Transactions.Infrastructure;
 
-internal class TransactionsDbContext(DbContextOptions options) : LedgerFlowDbContext(options)
+public class TransactionsDbContext(DbContextOptions options) : LedgerFlowDbContext(options)
 {
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -1,6 +1,6 @@
 ﻿namespace LedgerFlow.Infrastructure
 {
-    internal abstract class Repository(LedgerFlowDbContext dbContext) : IRepository
+    public abstract class Repository(LedgerFlowDbContext dbContext) : IRepository
     {
         public ICommitScope CommitScope => dbContext;
         public IQueryable<TEntity> Set<TEntity>() where TEntity : Entity

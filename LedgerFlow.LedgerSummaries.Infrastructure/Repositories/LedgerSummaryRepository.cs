@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LedgerFlow.LedgerSummaries.Infrastructure.Repositories;
 
-internal class LedgerSummaryRepository(LedgerSummariesDbContext dbContext) : Repository(dbContext), ILedgerSummaryRepository
+public class LedgerSummaryRepository(LedgerSummariesDbContext dbContext) : Repository(dbContext), ILedgerSummaryRepository
 {
     public void Add(LedgerSummary ledgerSummary)
     {

@@ -26,8 +26,6 @@ public class CreateCreditCommandHandler(ITransactionRepository transactionReposi
             transaction.Description);
 
         transactionRepository.Add(transaction);
-        await transactionRepository.CommitScope.CommitAsync(cancellationToken);
-
         logger.LogInformation("Transação de crédito criada com sucesso: {TransactionId}", transaction.Id);
 
         return Result.Success(transaction);

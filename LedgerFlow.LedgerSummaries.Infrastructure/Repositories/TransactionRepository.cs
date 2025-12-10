@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LedgerFlow.LedgerSummaries.Infrastructure.Repositories;
 
-internal class TransactionRepository(LedgerSummariesDbContext dbContext) : Repository(dbContext), ITransactionRepository
+public class TransactionRepository(LedgerSummariesDbContext dbContext) : Repository(dbContext), ITransactionRepository
 {
     public void Add(Transaction transaction)
     {

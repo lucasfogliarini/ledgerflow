@@ -41,8 +41,8 @@ public static class DependencyInjection
                 });
 
             opts.ListenToKafkaTopic("transaction-created")
-                .ReceiveRawJson<TransactionCreated>()
-                .UseDurableInbox();
+                .ReceiveRawJson<TransactionCreated>();
+                //.UseDurableInbox();
         });
     }
 
